@@ -1,18 +1,38 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 
 namespace Bus
 {
     public static class Hub
     {
-        private static List<object> _bus = new List<object>();
-        private static List<Handler> _handlers = new List<Handler>();
+        private static readonly List<object> Bus = new List<object>();
+        private static readonly List<Handler> Handlers = new List<Handler>();
 
         public static void Sub<T>(object sub, Action<T> handler)
         {
-            _handlers.Add(GetHandler<T>(sub, handler));
+            Handlers.Add(GetHandler<T>(sub, handler));
+        }
+        
+        public static void Pub<T>(T data = default)
+        {
+            foreach (var handler in Handlers.Where(h => h.Type == typeof(T)))
+                if (handler.Action is Action<T> sendAction)
+                    sendAction(data);
+        }
+
+        public static void Push<T>(T data)
+        {
+            Bus.Add(data);
+        }
+
+        public static IEnumerable<T> Pull<T>(Type type = default)
+        {
+            var output = type != null
+                ? Bus.Where(o => o.GetType() == type)
+                : Bus.Where(o => o.GetType() == typeof(T));
+            foreach (var o in output)
+                yield return (T) o;
         }
         
         private static Handler GetHandler<T>(object sub, Delegate handler)
@@ -23,27 +43,6 @@ namespace Bus
                 Type = typeof(T),
                 Sender = new WeakReference(sub)
             };
-        }
-        
-        public static void Pub<T>(T data = default)
-        {
-            foreach (var handler in _handlers.Where(h => h.Type == typeof(T)))
-                if (handler.Action is Action<T> sendAction)
-                    sendAction(data);
-        }
-
-        public static void Push<T>(T data)
-        {
-            _bus.Add(data);
-        }
-
-        public static IEnumerable<T> Pull<T>(Type type = default)
-        {
-            var output = type != null
-                ? _bus.Where(o => o.GetType() == type)
-                : _bus.Where(o => o.GetType() == typeof(T));
-            foreach (var o in output)
-                yield return (T) o;
         }
         
     }

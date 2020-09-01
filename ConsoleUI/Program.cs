@@ -6,7 +6,6 @@ using ECS.Hub;
 using ECS.World;
 using RogueLike;
 using RogueLike.Data;
-using RogueLike.Events;
 using RogueLike.Helpers;
 using RogueLike.Systems;
 using static RogueLike.Data.Items;

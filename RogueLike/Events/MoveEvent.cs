@@ -1,6 +1,3 @@
-using RogueLike.Data;
-using RogueLike.Data.Components;
-
 namespace RogueLike.Events
 {
     public class MoveEvent

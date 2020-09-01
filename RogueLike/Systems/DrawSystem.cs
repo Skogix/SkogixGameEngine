@@ -1,7 +1,6 @@
 using System;
 using ECS.Component;
 using ECS.EntitySystem;
-using ECS.World;
 using RogueLike.Data.Components;
 
 namespace RogueLike.Systems

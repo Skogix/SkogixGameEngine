@@ -25,9 +25,19 @@ namespace RogueLike.Systems
                 var key = Console.ReadKey().KeyChar;
                 switch (key)
                 {
+                    case ',':
+                        World.Pub(new MoveEvent(transform.X, transform.Y - 1));
+                        break;
+                    case 'e':
+                        World.Pub(new MoveEvent(transform.X + 1, transform.Y));
+                        break;
+                    case 'o':
+                        World.Pub(new MoveEvent(transform.X, transform.Y + 1));
+                        break;
                     case 'a':
                         World.Pub(new MoveEvent(transform.X - 1, transform.Y));
                         break;
+                    
                 }
             }
         }

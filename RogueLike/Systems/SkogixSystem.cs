@@ -1,8 +1,6 @@
-using System;
 using ECS.EntitySystem;
 using ECS.Events;
 using ECS.Hub;
-using ECS.World;
 using RogueLike.Events;
 
 namespace RogueLike.Systems
@@ -16,7 +14,7 @@ namespace RogueLike.Systems
 
         private void OnMoveEvent(MoveEvent e)
         {
-            World.Pub(new Debug("SkogixSystem lyssnade precis på ett moveevent"));
+            World.Pub(new Debug($"SkogixSystem lyssnade precis på ett moveevent till [x:{e.XTarget} y:{e.YTarget}]"));
         }
     }
 }

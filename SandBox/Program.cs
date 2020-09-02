@@ -22,6 +22,14 @@ namespace ConsoleUI
             bus.Pull<TestEvent>().ToList().ForEach(e => Print(e.Message));
             bus.Pull<TestActionEvent>().ToList().ForEach(e => e.Action.Invoke());
             bus.Pull<TestFuncEvent>().ToList().ForEach(e => Print(e.Func.Invoke()));
+            
+            hub.Sub<TestEvent>(skogix, e => Print(e.Message));
+            hub.Sub<TestActionEvent>(skogix, e => e.Action.Invoke());
+            hub.Sub<TestFuncEvent>(skogix, e => Print(e.Func.Invoke()));
+            
+            hub.Pub(skogix, new TestEvent(skogix, "TestEvent"));
+            hub.Pub(skogix, new TestActionEvent(PrintActionEvent));
+            hub.Pub(skogix, new TestFuncEvent(PrintFuncEvent));
         }
 
         private static string PrintFuncEvent() => "PrintFuncEvent";

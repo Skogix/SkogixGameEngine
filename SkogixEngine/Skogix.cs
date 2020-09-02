@@ -60,7 +60,7 @@ namespace ECS
 			}
 		}
 
-		public static void Print(string msg) => Console.WriteLine(msg);
+		public static void Print(object msg) => Console.WriteLine(msg);
 	}
 
 	public static class T

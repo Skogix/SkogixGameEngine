@@ -32,6 +32,7 @@ namespace ECS
 		{
 			Add(component);
 		}
+		public Entity(ITemplate template) : this(template.Components()){}
 
 		// --------------- api
 		public string Hash => $"{_id}-{_gen}";
@@ -44,6 +45,7 @@ namespace ECS
 		}
 
 		public static Entity FromPrototype(Entity prototype) => new Entity(prototype);
+		public static Entity FromTemplate(ITemplate template) => new Entity(template);
 		public T Get<T>() where T : Component => _componentsByType[typeof(T)] as T;
 		public void Remove(Component component)
 		{

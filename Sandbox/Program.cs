@@ -12,9 +12,11 @@ namespace Sandbox
 			Skogix.Init();
 			var firstEntity = new Entity(new TestComponent("mytext"));
 			var secondEntity = new Entity(firstEntity);
+			var templatedEntity = new Entity(new SkogixTemplate());
+			
 
-			Console.WriteLine(secondEntity._componentsByType.Count);
-			Console.WriteLine(secondEntity.Get<TestComponent>().SomeText);
+			Console.WriteLine(templatedEntity._componentsByType.Count);
+			Console.WriteLine(templatedEntity.Get<TestComponent>().SomeText);
 		}
 
 		public sealed class TestComponent : Component
@@ -24,6 +26,17 @@ namespace Sandbox
 			public TestComponent(string someText)
 			{
 				SomeText = someText;
+			}
+		}
+
+		public class SkogixTemplate : ITemplate
+		{
+			public string Name { get; } = "SkogixTemplate";
+			public IEnumerable<Component> Components()
+			{
+				var output = new List<Component>();
+				output.Add(new TestComponent("MyText"));
+				return output;
 			}
 		}
 	}

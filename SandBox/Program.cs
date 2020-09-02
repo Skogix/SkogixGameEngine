@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading;
@@ -27,7 +28,7 @@ namespace ConsoleUI
         private static void OnTestEvent(TestEvent e) => Print($"Sender: {e.Person.Name}\nMessage: {e.Message}");
 
         private static void Br() => Console.WriteLine();
-        private static void Hr(string msg) => Console.WriteLine($"-----{msg}");
+        private static void Hr(string msg = "") => Console.WriteLine($"-----{msg}");
         private static void Tab() => Console.WriteLine("\t");
         private static void Print(string msg) => Console.WriteLine(msg);
     }

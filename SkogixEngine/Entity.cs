@@ -19,6 +19,8 @@ namespace ECS
 			_container = null;
 			_componentsByType = new Dictionary<Type, Component>();
 		}
+
+		public Entity(Entity sourceEntity) : this(sourceEntity._componentsByType.Values.Select(c => c.Clone() as Component)){}
 		public Entity() : this(IdFactory<Entity>.Next())
 		{
 		}
@@ -41,6 +43,7 @@ namespace ECS
 			_componentsByType[componentType] = component;
 		}
 
+		public static Entity FromPrototype(Entity prototype) => new Entity(prototype);
 		public T Get<T>() where T : Component => _componentsByType[typeof(T)] as T;
 		public void Remove(Component component)
 		{

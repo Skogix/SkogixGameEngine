@@ -10,21 +10,21 @@ namespace Sandbox
 		{
 			//HubPub.Run();
 			Skogix.Init();
+			var firstEntity = new Entity(new TestComponent("mytext"));
+			var secondEntity = new Entity(firstEntity);
 
-			var components = new List<Component>();
-			components.Add(new TestComponent());
-			var entity = new Entity(components);
-			var entity2 = new Entity();
-			entity2.Add(new TestComponent());
-			var testComponent = entity2.Get<TestComponent>();
-			testComponent.SomeText = "huhu";
-			Console.WriteLine(entity2.Get<TestComponent>().SomeText);
-
+			Console.WriteLine(secondEntity._componentsByType.Count);
+			Console.WriteLine(secondEntity.Get<TestComponent>().SomeText);
 		}
 
 		public sealed class TestComponent : Component
 		{
 			public string SomeText { get; set; }
+
+			public TestComponent(string someText)
+			{
+				SomeText = someText;
+			}
 		}
 	}
 }

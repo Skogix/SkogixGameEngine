@@ -15,9 +15,7 @@ namespace Sandbox
 			testFilter.AddFilter<TestComponent>();
 
 			var skogix = new Entity();
-			//skogix.Add(new TestComponent("mytext"), new TestComponent2("huhu"));
-			skogix.Add(new TestComponent("test"));
-			skogix.Add(new TestComponent2("test"));
+			skogix.Add(new TestComponent("mytext"), new TestComponent2("huhu"));
 			Print(skogix.Info);
 			
 			Print(testFilter.Entities.Count);

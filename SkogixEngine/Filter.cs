@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace ECS
 {
@@ -28,7 +27,7 @@ namespace ECS
 
 		private void OnComponentAdded(ComponentAddedEvent e)
 		{
-			if(EntityHasAllComponents(e.Entity, _componentTypes)) Entities.Add(e.Entity);
+			if(EntityHasAllComponents(e.Entity, _componentTypes) && _componentTypes.Contains(e.ComponentType) == false) Entities.Add(e.Entity);
 		}
 	}
 }

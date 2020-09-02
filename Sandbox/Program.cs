@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using ECS;
+using static ECS.Skogix;
 
 namespace Sandbox
 {
@@ -9,31 +10,24 @@ namespace Sandbox
 		private static void Main(string[] args)
 		{
 			//HubPub.Run();
-			Skogix.Init();
-			
-			var skogix = new Entity();
+			Init();
 			var testFilter = new Filter();
-			
-			testFilter.AddFilter<TestComponent2>();
 			testFilter.AddFilter<TestComponent>();
-			
-			skogix.Add(new TestComponent2("wawa"));
-			skogix.Add(new TestComponent("huhu"));
 
-			testFilter.Entities.ForEach(Print);
+			var skogix = new Entity(new SkogixTemplate());
+			Console.WriteLine(skogix.Info);
 			
-			skogix.Remove(skogix.Get<TestComponent2>());
-			
-			testFilter.Entities.ForEach(Print);
-			
+			Print(testFilter.Entities.Count);
+			skogix.Remove<TestComponent>();
+			Print(testFilter.Entities.Count);
 			
 		}
 
-		private static void Print(Entity entity) => Console.WriteLine($"{entity.Hash}");
+		private static void Print(object msg) => Console.WriteLine($"{msg.ToString()}");
 
 		public sealed class TestComponent : Component
 		{
-			public string SomeText { get; set; }
+			public string SomeText { get; }
 
 			public TestComponent(string someText)
 			{
@@ -57,6 +51,7 @@ namespace Sandbox
 			{
 				var output = new List<Component>();
 				output.Add(new TestComponent("MyText"));
+				output.Add(new TestComponent2("MyText2"));
 				return output;
 			}
 		}

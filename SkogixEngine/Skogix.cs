@@ -12,6 +12,7 @@ namespace ECS
 		private static Dictionary<Type, int> _idByType;
 		private static Dictionary<string, Type> _typeByName;
 		private static List<Type> _types;
+		public static string Br = "\n";
 
 		private static void _init()
 		{
@@ -58,5 +59,15 @@ namespace ECS
 				return _idCount++;
 			}
 		}
+
+		public static void Print(string msg) => Console.WriteLine(msg);
+	}
+
+	public static class T
+	{
+		public const string Br = "\n";
+		public const string Tab = "\t";
+
+		public static string Print(Type t) => t.Name;
 	}
 }

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using static ECS.T;
 
 namespace ECS
 {
@@ -31,6 +32,9 @@ namespace ECS
 		// --------------- api
 		public string Hash => $"{_id}-{_gen}";
 
+		public string Info => $"Hash: {Hash}" + Br +
+		                      $"Components ({_componentsByType.Count})";
+
 		public void Add(Component component)
 		{
 			var componentType = component.GetType();
@@ -42,12 +46,14 @@ namespace ECS
 		public static Entity FromPrototype(Entity prototype) => new Entity(prototype);
 		public static Entity FromTemplate(ITemplate template) => new Entity(template);
 		public T Get<T>() where T : Component => _componentsByType[typeof(T)] as T;
-		public void Remove(Component component)
+		
+		public void Remove(Component component) => Remove(component.GetType());
+		public void Remove<T>() => Remove(typeof(T));
+		public void Remove(Type componentType)
 		{
-			var componentType = component.GetType();
-			var componentId = Skogix.GetComponentId(componentType);
 			_componentsByType.Remove(componentType);
-			Hub.Pub<ComponentRemovedEvent>(this, new ComponentRemovedEvent(this, component));
+			Hub.Pub(this, new ComponentRemovedEvent(this, componentType));
 		}
+
 	}
 }

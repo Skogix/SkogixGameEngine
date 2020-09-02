@@ -19,10 +19,10 @@ namespace ECS
 		public Entity Entity;
 		public Type ComponentType;
 
-		public ComponentRemovedEvent(Entity entity, Component component)
+		public ComponentRemovedEvent(Entity entity, Type componentType)
 		{
 			Entity = entity;
-			ComponentType = component.GetType();
+			ComponentType = componentType;
 		}
 	}
 }

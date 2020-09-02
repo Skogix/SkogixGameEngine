@@ -15,17 +15,14 @@ namespace ConsoleUI
             var bus = new Bus();
             var skogix = new Person("Skogix");
             
-            Hr("Push 'push message'");
             bus.Push(new TestEvent(skogix, "push message"));
-            Hr("Sub '<TestEvent>'");
-            hub.Sub<TestEvent>(skogix, OnTestEvent);
-            Hr("Pub");
-            hub.Pub(skogix, new TestEvent(skogix, "pub message"));
-            Hr("Pull");
-            bus.Pull<TestEvent>().ToList().ForEach(e => Print($"Sender:{e.Person.Name}\nMessage: {e.Message}"));
+            hub.Sub<TestFunctionEvent>(skogix, OnTestEvent);
+            hub.Pub(skogix, new TestFunctionEvent(() => Print("huhu"))); 
+            bus.Pull<TestEvent>().ToList().ForEach(PrintTestEvent);
         }
 
-        private static void OnTestEvent(TestEvent e) => Print($"Sender: {e.Person.Name}\nMessage: {e.Message}");
+        private static void OnTestEvent(TestFunctionEvent e) => e.Action.Invoke();
+        private static void PrintTestEvent(TestEvent e) => Print($"Sender: {e.Sender.Name}\nMessage: {e.Message}");
 
         private static void Br() => Console.WriteLine();
         private static void Hr(string msg = "") => Console.WriteLine($"-----{msg}");
@@ -42,13 +39,24 @@ namespace ConsoleUI
         }
     }
 
+    internal class TestFunctionEvent
+    {
+        public Action Action;
+
+        public TestFunctionEvent(Action action)
+        {
+            Action = action;
+        }
+    }
+
     internal class TestEvent
     {
-        public readonly string Message;
-        public readonly Person Person;
-        public TestEvent(Person person, string message)
+        public Person Sender;
+        public string Message;
+
+        public TestEvent(Person sender, string message)
         {
-            Person = person;
+            Sender = sender;
             Message = message;
         }
     }

@@ -32,8 +32,7 @@ namespace ECS
 		// --------------- api
 		public string Hash => $"{_id}-{_gen}";
 
-		public string Info => $"Hash: {Hash}" + Br +
-		                      $"Components ({_componentsByType.Count})";
+		public string Info => $"Hash: {Hash} \nComponents ({_componentsByType.Count})";
 
 		public void Add(Component component)
 		{
@@ -55,5 +54,8 @@ namespace ECS
 			Hub.Pub(this, new ComponentRemovedEvent(this, componentType));
 		}
 
+		public void Add(IEnumerable<Component> components) => components.ToList().ForEach(Add);
+
+		public void Add(params Component[] components) => components.ToList().ForEach(Add);
 	}
 }

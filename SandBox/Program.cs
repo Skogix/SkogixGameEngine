@@ -15,14 +15,17 @@ namespace ConsoleUI
             var bus = new Bus();
             var skogix = new Person("Skogix");
             
-            bus.Push(new TestEvent(skogix, "push message"));
-            hub.Sub<TestFunctionEvent>(skogix, OnTestEvent);
-            hub.Pub(skogix, new TestFunctionEvent(() => Print("huhu"))); 
-            bus.Pull<TestEvent>().ToList().ForEach(PrintTestEvent);
+            bus.Push(new TestEvent(skogix, "TestEvent"));
+            bus.Push(new TestActionEvent(PrintActionEvent));
+            bus.Push(new TestFuncEvent(PrintFuncEvent));
+
+            bus.Pull<TestEvent>().ToList().ForEach(e => Print(e.Message));
+            bus.Pull<TestActionEvent>().ToList().ForEach(e => e.Action.Invoke());
+            bus.Pull<TestFuncEvent>().ToList().ForEach(e => Print(e.Func.Invoke()));
         }
 
-        private static void OnTestEvent(TestFunctionEvent e) => e.Action.Invoke();
-        private static void PrintTestEvent(TestEvent e) => Print($"Sender: {e.Sender.Name}\nMessage: {e.Message}");
+        private static string PrintFuncEvent() => "PrintFuncEvent";
+        private static void PrintActionEvent() => Print("PrintActionEvent");
 
         private static void Br() => Console.WriteLine();
         private static void Hr(string msg = "") => Console.WriteLine($"-----{msg}");
@@ -39,13 +42,23 @@ namespace ConsoleUI
         }
     }
 
-    internal class TestFunctionEvent
+    internal class TestActionEvent
     {
         public Action Action;
 
-        public TestFunctionEvent(Action action)
+        public TestActionEvent(Action action)
         {
             Action = action;
+        }
+    }
+
+    internal class TestFuncEvent
+    {
+        public Func<string> Func;
+
+        public TestFuncEvent(Func<string> func)
+        {
+            Func = func;
         }
     }
 

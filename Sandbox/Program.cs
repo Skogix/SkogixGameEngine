@@ -12,12 +12,24 @@ namespace Sandbox
 			Skogix.Init();
 			
 			var skogix = new Entity();
-			Hub.Sub<ComponentAddedEvent>(skogix, e => Console.WriteLine($"Skogix har lyssnat på {e.Entity.Hash} + {e.ComponentType.Name}"));
+			var testFilter = new Filter();
 			
+			testFilter.AddFilter<TestComponent2>();
+			testFilter.AddFilter<TestComponent>();
 			
+			skogix.Add(new TestComponent2("wawa"));
 			skogix.Add(new TestComponent("huhu"));
+
+			testFilter.Entities.ForEach(Print);
+			
+			skogix.Remove(skogix.Get<TestComponent2>());
+			
+			testFilter.Entities.ForEach(Print);
+			
 			
 		}
+
+		private static void Print(Entity entity) => Console.WriteLine($"{entity.Hash}");
 
 		public sealed class TestComponent : Component
 		{
@@ -29,6 +41,15 @@ namespace Sandbox
 			}
 		}
 
+		public sealed class TestComponent2 : Component
+		{
+			public string SomeText { get; set; }
+
+			public TestComponent2(string someText)
+			{
+				SomeText = someText;
+			}
+		}
 		public class SkogixTemplate : ITemplate
 		{
 			public string Name { get; } = "SkogixTemplate";

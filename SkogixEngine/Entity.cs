@@ -47,6 +47,7 @@ namespace ECS
 			var componentType = component.GetType();
 			var componentId = Skogix.GetComponentId(componentType);
 			_componentsByType.Remove(componentType);
+			Hub.Pub<ComponentRemovedEvent>(this, new ComponentRemovedEvent(this, component));
 		}
 	}
 }

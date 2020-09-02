@@ -8,25 +8,23 @@ namespace Sandbox
 	{
 		public static void Run()
 		{
-			var hub = new Hub();
-			var bus = new Bus();
 			var skogix = new Person("Skogix");
 
-			bus.Push(new TestEvent(skogix, "TestEvent"));
-			bus.Push(new TestActionEvent(PrintActionEvent));
-			bus.Push(new TestFuncEvent(PrintFuncEvent));
+			Bus.Push(new TestEvent(skogix, "TestEvent"));
+			Bus.Push(new TestActionEvent(PrintActionEvent));
+			Bus.Push(new TestFuncEvent(PrintFuncEvent));
 
-			bus.Pull<TestEvent>().ToList().ForEach(e => Print(e.Message));
-			bus.Pull<TestActionEvent>().ToList().ForEach(e => e.Action.Invoke());
-			bus.Pull<TestFuncEvent>().ToList().ForEach(e => Print(e.Func.Invoke()));
+			Bus.Pull<TestEvent>().ToList().ForEach(e => Print(e.Message));
+			Bus.Pull<TestActionEvent>().ToList().ForEach(e => e.Action.Invoke());
+			Bus.Pull<TestFuncEvent>().ToList().ForEach(e => Print(e.Func.Invoke()));
 
-			hub.Sub<TestEvent>(skogix, e => Print(e.Message));
-			hub.Sub<TestActionEvent>(skogix, e => e.Action.Invoke());
-			hub.Sub<TestFuncEvent>(skogix, e => Print(e.Func.Invoke()));
+			Hub.Sub<TestEvent>(skogix, e => Print(e.Message));
+			Hub.Sub<TestActionEvent>(skogix, e => e.Action.Invoke());
+			Hub.Sub<TestFuncEvent>(skogix, e => Print(e.Func.Invoke()));
 
-			hub.Pub(skogix, new TestEvent(skogix, "TestEvent"));
-			hub.Pub(skogix, new TestActionEvent(PrintActionEvent));
-			hub.Pub(skogix, new TestFuncEvent(PrintFuncEvent));
+			Hub.Pub(skogix, new TestEvent(skogix, "TestEvent"));
+			Hub.Pub(skogix, new TestActionEvent(PrintActionEvent));
+			Hub.Pub(skogix, new TestFuncEvent(PrintFuncEvent));
 		}
 
 		private static string PrintFuncEvent()

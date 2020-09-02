@@ -4,16 +4,16 @@ using System.Linq;
 
 namespace ECS
 {
-	public class Bus
+	public static class Bus
 	{
-		private readonly List<object> _bus = new List<object>();
+		private static readonly List<object> _bus = new List<object>();
 
-		public void Push<T>(T data)
+		public static void Push<T>(T data)
 		{
 			_bus.Add(data);
 		}
 
-		public IEnumerable<T> Pull<T>(Type type = default) where T : class
+		public static IEnumerable<T> Pull<T>(Type type = default) where T : class
 		{
 			return from o in type != null
 					? _bus.Where(o => o.GetType() == type)

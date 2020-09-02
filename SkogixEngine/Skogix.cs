@@ -47,5 +47,16 @@ namespace ECS
 		{
 			return _idByType[type];
 		}
+
+
+		internal static class IdFactory
+		{
+			private static int _idCount;
+
+			public static int Next()
+			{
+				return _idCount++;
+			}
+		}
 	}
 }

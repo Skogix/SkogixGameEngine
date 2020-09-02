@@ -4,16 +4,16 @@ using System.Linq;
 
 namespace ECS
 {
-	public class Hub
+	public static class Hub
 	{
-		private readonly List<Handler> _handlers = new List<Handler>();
+		private static readonly List<Handler> _handlers = new List<Handler>();
 
-		public void Sub<T>(object sub, Action<T> handler)
+		public static void Sub<T>(object sub, Action<T> handler)
 		{
 			_handlers.Add(GetHandler<T>(sub, handler));
 		}
 
-		public void Pub<T>(object sender, T data = default)
+		public static void Pub<T>(object sender, T data = default)
 		{
 			foreach (var handler in _handlers.Where(h => h.Type == typeof(T)))
 				if (handler.Action is Action<T> sendAction)

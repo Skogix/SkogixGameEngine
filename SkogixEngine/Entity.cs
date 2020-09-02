@@ -9,30 +9,24 @@ namespace ECS
 		public readonly Dictionary<Type, Component> _componentsByType;
 		private readonly int _gen;
 		private readonly int _id;
-		private Container _container;
 
 		// --------------- ctor
 		private Entity(int id)
 		{
 			_id = id;
 			_gen = 0;
-			_container = null;
 			_componentsByType = new Dictionary<Type, Component>();
 		}
 
 		public Entity(Entity sourceEntity) : this(sourceEntity._componentsByType.Values.Select(c => c.Clone() as Component)){}
-		public Entity() : this(IdFactory<Entity>.Next())
-		{
-		}
-		public Entity(IEnumerable<Component> components) : this(IdFactory<Entity>.Next())
-		{
-			components.ToList().ForEach(Add);
-		}
-		public Entity(Component component) : this(IdFactory<Entity>.Next())
-		{
-			Add(component);
-		}
+		public Entity() : this(Skogix.IdFactory.Next()) {}
+		public Entity(IEnumerable<Component> components) : this(Skogix.IdFactory.Next()) => components.ToList().ForEach(Add);
+		public Entity(Component component) : this(Skogix.IdFactory.Next()) => Add(component);
 		public Entity(ITemplate template) : this(template.Components()){}
+
+		public bool Contains(Type componentType) => _componentsByType.ContainsKey(componentType);
+		public bool Contains(IEnumerable<Type> componentTypes) => componentTypes.All(_componentsByType.ContainsKey);
+		public bool Contains(params Type[] componentTypes) => Contains(componentTypes as IEnumerable<Type>);
 
 		// --------------- api
 		public string Hash => $"{_id}-{_gen}";
@@ -42,6 +36,7 @@ namespace ECS
 			var componentType = component.GetType();
 			var componentId = Skogix.GetComponentId(componentType);
 			_componentsByType[componentType] = component;
+			Hub.Pub(this, new ComponentAddedEvent(this, component));
 		}
 
 		public static Entity FromPrototype(Entity prototype) => new Entity(prototype);

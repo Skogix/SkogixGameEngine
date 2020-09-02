@@ -10,13 +10,13 @@ namespace Sandbox
 		{
 			//HubPub.Run();
 			Skogix.Init();
-			var firstEntity = new Entity(new TestComponent("mytext"));
-			var secondEntity = new Entity(firstEntity);
-			var templatedEntity = new Entity(new SkogixTemplate());
 			
-
-			Console.WriteLine(templatedEntity._componentsByType.Count);
-			Console.WriteLine(templatedEntity.Get<TestComponent>().SomeText);
+			var skogix = new Entity();
+			Hub.Sub<ComponentAddedEvent>(skogix, e => Console.WriteLine($"Skogix har lyssnat på {e.Entity.Hash} + {e.ComponentType.Name}"));
+			
+			
+			skogix.Add(new TestComponent("huhu"));
+			
 		}
 
 		public sealed class TestComponent : Component

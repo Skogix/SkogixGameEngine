@@ -11,6 +11,7 @@ namespace ECS
 		private readonly int _id;
 		private Container _container;
 
+		// --------------- ctor
 		private Entity(int id)
 		{
 			_id = id;
@@ -18,21 +19,19 @@ namespace ECS
 			_container = null;
 			_componentsByType = new Dictionary<Type, Component>();
 		}
-
 		public Entity() : this(IdFactory<Entity>.Next())
 		{
 		}
-
 		public Entity(IEnumerable<Component> components) : this(IdFactory<Entity>.Next())
 		{
 			components.ToList().ForEach(Add);
 		}
-
 		public Entity(Component component) : this(IdFactory<Entity>.Next())
 		{
 			Add(component);
 		}
 
+		// --------------- api
 		public string Hash => $"{_id}-{_gen}";
 
 		public void Add(Component component)
@@ -40,6 +39,14 @@ namespace ECS
 			var componentType = component.GetType();
 			var componentId = Skogix.GetComponentId(componentType);
 			_componentsByType[componentType] = component;
+		}
+
+		public T Get<T>() where T : Component => _componentsByType[typeof(T)] as T;
+		public void Remove(Component component)
+		{
+			var componentType = component.GetType();
+			var componentId = Skogix.GetComponentId(componentType);
+			_componentsByType.Remove(componentType);
 		}
 	}
 }

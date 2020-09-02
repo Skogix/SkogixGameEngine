@@ -16,7 +16,7 @@ namespace Sandbox
 			var entity = new Entity(components);
 			var entity2 = new Entity();
 			entity2.Add(new TestComponent());
-			entity2.Add(new TestComponent());
+			entity2.Remove(entity2.Get<TestComponent>());
 			Console.WriteLine(entity._componentsByType.Count);
 			Console.WriteLine(entity2._componentsByType.Count);
 			

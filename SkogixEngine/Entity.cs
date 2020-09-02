@@ -1,11 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using static ECS.T;
 
 namespace ECS
 {
-	public sealed class Entity
+	public class Entity
 	{
 		public readonly Dictionary<Type, Component> _componentsByType;
 		private readonly int _gen;
@@ -23,8 +24,8 @@ namespace ECS
 		public Entity() : this(Skogix.IdFactory.Next()) {}
 		public Entity(IEnumerable<Component> components) : this(Skogix.IdFactory.Next()) => components.ToList().ForEach(Add);
 		public Entity(Component component) : this(Skogix.IdFactory.Next()) => Add(component);
-		public Entity(ITemplate template) : this(template.Components()){}
-
+		public Entity(ITemplate template) : this(template.Components){}
+		
 		public bool Contains(Type componentType) => _componentsByType.ContainsKey(componentType);
 		public bool Contains(IEnumerable<Type> componentTypes) => componentTypes.All(_componentsByType.ContainsKey);
 		public bool Contains(params Type[] componentTypes) => Contains(componentTypes as IEnumerable<Type>);
@@ -44,6 +45,7 @@ namespace ECS
 
 		public static Entity FromPrototype(Entity prototype) => new Entity(prototype);
 		public static Entity FromTemplate(ITemplate template) => new Entity(template);
+
 		public T Get<T>() where T : Component => _componentsByType[typeof(T)] as T;
 		
 		public void Remove(Component component) => Remove(component.GetType());

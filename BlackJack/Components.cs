@@ -1,94 +1,52 @@
 using System;
 using System.Collections.Generic;
-using System.Drawing;
+using System.Net.Http.Headers;
+using System.Runtime.CompilerServices;
 using ECS;
 
 namespace BlackJack
 {
-	public enum ESuit
+	public sealed class Card : Component
 	{
-		Hearts,
-		Clubs,
-		Diamonds,
-		Spades,
-	}
-	public enum ECardValue
-	{
-		Ace,
-		Two,
-		Three,
-		Four,
-		Five,
-		Six,
-		Seven,
-		Eight,
-		Nine,
-		Ten,
-		Jack,
-		Queen,
-		King,
-	}
-
-	public class Suit : Component
-	{
-		public char Glyph;
-		public ESuit ESuit;
-		public ConsoleColor Color;
-
-		public Suit(ESuit eSuit, char glyph, ConsoleColor color)
+		public void Print()
 		{
-			ESuit = eSuit;
+			Console.ForegroundColor = Suit.Color;
+			Console.Write(Suit.Glyph);
+			Console.ForegroundColor = ConsoleColor.White;
+			Console.Write(Value.Glyph);
+		}
+		public Suit Suit;
+		public Value Value;
+
+		public Card(Suit suit, Value value)
+		{
+			Suit = suit;
+			Value = value;
+		}
+	}
+
+	public sealed class Suit : Component
+	{
+		public Suit(string glyph, ConsoleColor color)
+		{
 			Glyph = glyph;
 			Color = color;
 		}
 
-		public string Print => Glyph.ToString();
+		public string Glyph { get; set; }
+		public ConsoleColor Color { get; set; }
 	}
-
-	public class CardValue : Component
+	public sealed class Value : Component
 	{
-		public char Glyph;
-		public ECardValue ECardValue;
-
-		public CardValue(ECardValue eCardValue, char glyph)
+		public Value(string glyph, int value1, int value2 = 0)
 		{
-			ECardValue = eCardValue;
 			Glyph = glyph;
+			Value1 = value1;
+			Value2 = value2;
 		}
 
-		public string Print => Glyph.ToString();
+		public string Glyph { get; set; }
+		public int Value1 { get; set; }
+		public int Value2 { get; set; }
 	}
-	public class Card : Component
-	{
-		public Suit Suit;
-		public CardValue CardValue;
-
-		public Card(Suit suit, CardValue cardValue)
-		{
-			Suit = suit;
-			CardValue = cardValue;
-		}
-
-		public void Print()
-		{
-			Console.ForegroundColor = Suit.Color;
-			Console.Write($"{Suit.Glyph}{CardValue.Glyph}");
-			Console.ForegroundColor = default;
-		}
-	}
-	public class Deck : Component
-	{
-		internal List<Card> Cards = new List<Card>();
-	}
-	public class Shoe : Component
-	{
-		public List<Card> Cards = new List<Card>();
-	}
-	public class Hand : Component
-	{
-		public List<Card> Cards = new List<Card>();
-	}
-	public class Dealer : Component{}
-	public class Player : Component{}
-	
 }

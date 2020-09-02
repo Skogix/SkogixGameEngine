@@ -9,50 +9,34 @@ namespace Sandbox
 	{
 		private static void Main(string[] args)
 		{
-			//HubPub.Run();
-			Init();
-			var testFilter = new Filter(typeof(TestComponent), typeof(TestComponent2));
-			testFilter.AddFilter<TestComponent>();
-
-			var skogix = new Entity();
-			skogix.Add(new TestComponent("mytext"), new TestComponent2("huhu"));
+			ECS.Skogix.Init();
+			
+			var skogix = new Entity(new Skogix());
+			
 			Print(skogix.Info);
-			
-			Print(testFilter.Entities.Count);
-			
+			Print(skogix.Get<TestComponent>().MyString);
 		}
 
 		private static void Print(object msg) => Console.WriteLine($"{msg.ToString()}");
 
+		public class Skogix : ITemplate
+		{
+			public Skogix()
+			{
+				Components.Add(new TestComponent("huhu"));
+			}
+			public string Name { get; } = "Skogix";
+			public List<Component> Components { get; set; } = new List<Component>();
+		}
+
 		public sealed class TestComponent : Component
 		{
-			public string SomeText { get; }
-
-			public TestComponent(string someText)
+			public TestComponent(string myString)
 			{
-				SomeText = someText;
+				MyString = myString;
 			}
-		}
 
-		public sealed class TestComponent2 : Component
-		{
-			public string SomeText { get; set; }
-
-			public TestComponent2(string someText)
-			{
-				SomeText = someText;
-			}
-		}
-		public class SkogixTemplate : ITemplate
-		{
-			public string Name { get; } = "SkogixTemplate";
-			public IEnumerable<Component> Components()
-			{
-				var output = new List<Component>();
-				output.Add(new TestComponent("MyText"));
-				output.Add(new TestComponent2("MyText2"));
-				return output;
-			}
+			public string MyString { get; set; }
 		}
 	}
 }

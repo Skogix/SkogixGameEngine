@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using ECS;
 
@@ -8,11 +9,27 @@ namespace BlackJack
 	{
 		static void Main(string[] args)
 		{
-			Console.Clear();
-			var shoe = CardFactory.GetShoe(5);
-			foreach (var card in shoe.Cards)
+			Skogix.Init();
+			
+			/*
+			// old
+			var shoeOld = CardFactoryOld.GetShoe(5);
+			shoeOld.Cards.ForEach(c => c.Print());
+			
+			Skogix.Print("");
+			Skogix.Print("");
+			Skogix.Print("");
+			
+			*/
+			// new
+
+			var cardFilter = new Filter(typeof(Card));
+			
+			var deckFromFactory = CardFactory.GetDeck();
+
+			foreach (var entity in cardFilter.Entities)
 			{
-				card.Print();
+				entity.Get<Card>().Print();
 			}
 		}
 	}

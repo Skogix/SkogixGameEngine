@@ -6,7 +6,7 @@ namespace ECS
 {
 	public sealed class Entity
 	{
-		private readonly Dictionary<Type, Component> _componentsByType;
+		public readonly Dictionary<Type, Component> _componentsByType;
 		private readonly int _gen;
 		private readonly int _id;
 		private Container _container;

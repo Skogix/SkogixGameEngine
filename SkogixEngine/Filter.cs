@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace ECS
 {
@@ -16,6 +17,15 @@ namespace ECS
 			Hub.Sub<ComponentRemovedEvent>(this, OnComponentRemoved);
 		}
 
+		public Filter(params Type[] componentTypes) : this() => componentTypes.ToList().ForEach(AddFilter);
+		
+		public void AddFilter<T>() => AddFilter(typeof(T));
+
+		public void AddFilter(Type componentType)
+		{
+			if (_componentTypes.Contains(componentType) == false) _componentTypes.Add(componentType);
+		}
+
 		private void OnComponentRemoved(ComponentRemovedEvent e)
 		{
 			if (EntityHasAllComponents(e.Entity, _componentTypes) == false) Entities.Remove(e.Entity);
@@ -23,11 +33,10 @@ namespace ECS
 
 		private bool EntityHasAllComponents(Entity entity, List<Type> componentTypes) => entity.Contains(componentTypes);
 
-		public void AddFilter<T>() => _componentTypes.Add(typeof(T));
 
 		private void OnComponentAdded(ComponentAddedEvent e)
 		{
-			if(EntityHasAllComponents(e.Entity, _componentTypes) && _componentTypes.Contains(e.ComponentType) == false) Entities.Add(e.Entity);
+			if(EntityHasAllComponents(e.Entity, _componentTypes) && Entities.Contains(e.Entity) == false) Entities.Add(e.Entity);
 		}
 	}
 }

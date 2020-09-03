@@ -1,3 +1,4 @@
+using CardGame.Events;
 using ECS;
 
 namespace CardGame.Systems

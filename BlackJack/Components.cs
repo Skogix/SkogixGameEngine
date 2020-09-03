@@ -117,9 +117,8 @@ namespace CardGame
 		}
 	}
 
-	public class Table : Entity, ICardContainer
+	public class Table : Entity
 	{
-		public List<Entity> Cards { get; set; }
 		public List<Player> Players { get; set; }
 		public Dealer Dealer;
 		public Deck Deck;

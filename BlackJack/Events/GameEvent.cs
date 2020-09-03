@@ -11,44 +11,31 @@ public enum Eui
 }
 namespace CardGame.Events
 {
-	public static class Send<TEvent> where TEvent : IEvent
+	public static class Send
 	{
-		public static void Debug(string message) => Hub.Pub(new Debug(message));
-		public static void Ui(Eui eui, int x, int y, string msg) => Hub.Pub(new GameEvent<UiSystem, IPrint>());
+		public static void Ui(E e, int x, int y, string msg, ConsoleColor color) => Hub.Pub(new UiEvent(e, x, y, msg, color));
 	}
 
-	public interface IPrint : IEvent { }
-
-	public class Send<TEvent, TSystem> 
-		where TEvent : IEvent
-		where TSystem : EntitySystem
+	public enum E
 	{
+		None,
+		Print,
 		
 	}
-
-	public class GameEvent<TS, TE>
-		where TS : EntitySystem
-		where TE : IEvent
+	public class UiEvent : IEvent
 	{
-		
-	}
-	public class GameEvent<TEvent> 
-		where TEvent : IEvent
-	{
-		public string Message;
-		public GameEvent(string message)
+		public int X;
+		public int Y;
+		public string Msg;
+		public ConsoleColor Color;
+		public E E;
+		public UiEvent(E e, in int x, in int y, string msg, ConsoleColor color)
 		{
-			Message = message;
-		}
-	}
-
-	public class Debug : IEvent
-	{
-		public string Message;
-
-		public Debug(string message)
-		{
-			Message = message;
+			E = e;
+			X = x;
+			Y = y;
+			Msg = msg;
+			Color = color;
 		}
 	}
 }

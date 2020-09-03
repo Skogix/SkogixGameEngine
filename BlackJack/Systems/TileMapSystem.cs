@@ -1,4 +1,5 @@
 using System.Linq;
+using CardGame.Events;
 using ECS;
 
 namespace CardGame.Systems
@@ -58,6 +59,7 @@ namespace CardGame.Systems
 					var drawable = GetTileDrawable(x, y);
 					//Send.UiPrint(x,y,drawable.Glyph.ToString(), drawable.Color);
 					// ToDo: Uppdatera härifrån
+					Send.Ui(E.Print, x,y,drawable.Glyph.ToString(),drawable.Color);
 				}
 			}
 

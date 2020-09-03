@@ -8,7 +8,7 @@ namespace ECS
 	{
 		private static readonly List<Handler> _handlers = new List<Handler>();
 
-		public static void Sub<T>(object sub, Action<T> handler) where T: IEvent
+		public static void Sub<T>(object sub, Action<T> handler)
 		{
 			_handlers.Add(GetHandler<T>(sub, handler));
 		}

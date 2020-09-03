@@ -9,16 +9,27 @@ namespace ECS
 	/// </summary>
 	public static class Skogix
 	{
-		private static Dictionary<Type, int> _idByType;
-		private static Dictionary<string, Type> _typeByName;
-		private static List<Type> _types;
-		public static string Br = "\n";
+		private static Dictionary<Type, int> _componentIdByType;
+		private static Dictionary<string, Type> _componentTypeByName;
+		private static List<Type> _componentTypes;
+		
+		private static List<EntitySystem> _entitySystems;
+		private static List<RunSystem> _runSystems;
+		private static List<InitSystem> _initSystems;
+
+		public static Dictionary<string, Entity> _entityByHash;
+		public static Dictionary<Type, Entity> _entityByType;
 
 		private static void _init()
 		{
-			_idByType = new Dictionary<Type, int>();
-			_typeByName = new Dictionary<string, Type>();
-			_types = new List<Type>();
+			_componentIdByType = new Dictionary<Type, int>();
+			_componentTypeByName = new Dictionary<string, Type>();
+			_componentTypes = new List<Type>();
+			_entitySystems = new List<EntitySystem>();
+			_runSystems = new List<RunSystem>();
+			_initSystems = new List<InitSystem>();
+			_entityByHash = new Dictionary<string, Entity>();
+			_entityByType = new Dictionary<Type, Entity>();
 
 			
 			var domain = AppDomain.CurrentDomain;															// nuvarande domain, dvs inte SkogixEngine utan där den callas
@@ -28,13 +39,34 @@ namespace ECS
 				where type.IsSealed && type.IsSubclassOf(typeof(Component))		// där typen är sealed och ärver av component
 				select type)
 			{
-				var id = _types.Count;
-				_types.Add(componentType);
-				_typeByName[componentType.Name] = componentType;
-				_idByType[componentType] = id;
+				var id = _componentTypes.Count;
+				_componentTypes.Add(componentType);
+				_componentTypeByName[componentType.Name] = componentType;
+				_componentIdByType[componentType] = id;
 			}
 		}
 
+		internal static int GetComponentId(Type type)
+		{
+			return _componentIdByType[type];
+		}
+		internal static class EntityIdFactory
+		{
+			private static int _idCount;
+
+			public static int Next()
+			{
+				return _idCount++;
+			}
+
+			public static Entity Get()
+			{
+				var output = new Entity();
+				_entityByHash.Add(output.Hash, output);
+				_entityByType.Add(output.GetType(), output);
+				return output;
+			}
+		}
 		/// <summary>
 		///   Måste callas innan något annat
 		///   Läser in alla components i domain
@@ -44,30 +76,14 @@ namespace ECS
 			_init();
 		}
 
-		internal static int GetComponentId(Type type)
+		public static void AddSystem(EntitySystem entitySystem) 
 		{
-			return _idByType[type];
+			_entitySystems.Add(entitySystem);
+			//if(system is EntitySystem entitySystem) _entitySystems.Add(entitySystem);
+			if(entitySystem is RunSystem runSystem) _runSystems.Add(runSystem); 
+			if(entitySystem is InitSystem initSystem) _initSystems.Add(initSystem); 
 		}
-
-
-		internal static class IdFactory
-		{
-			private static int _idCount;
-
-			public static int Next()
-			{
-				return _idCount++;
-			}
-		}
-
-		public static void Print(object msg) => Console.WriteLine(msg);
-	}
-
-	public static class T
-	{
-		public const string Br = "\n";
-		public const string Tab = "\t";
-
-		public static string Print(Type t) => t.Name;
+		public static void Run() => _runSystems.ForEach(s => s.Run());
+		public static void InitSystems() => _initSystems.ForEach(s => s.Init());
 	}
 }

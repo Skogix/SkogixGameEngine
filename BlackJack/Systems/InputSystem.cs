@@ -1,3 +1,5 @@
+using System;
+using CardGame.Events;
 using ECS;
 using static System.Console;
 
@@ -17,7 +19,7 @@ namespace CardGame.Systems
 				var key = entity.Get<Input>().Key = ReadKey(true).KeyChar;
 				switch (char.ToUpper(key))
 				{
-					case '*':
+					case '*': Console.WriteLine("Huhuhu");
 						break;
 					case 'S':
 						break;

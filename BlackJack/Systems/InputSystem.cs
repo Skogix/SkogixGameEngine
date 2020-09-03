@@ -1,5 +1,3 @@
-using System;
-using CardGame.Events;
 using ECS;
 using static System.Console;
 
@@ -10,6 +8,7 @@ namespace CardGame.Systems
 		public void Init()
 		{
 			AddFilter<Input>();
+			AddFilter<Player>();
 		}
 		public void Run()
 		{
@@ -19,10 +18,8 @@ namespace CardGame.Systems
 				switch (char.ToUpper(key))
 				{
 					case '*':
-						Send.UiPrint(3,3,"Skogix", ConsoleColor.Blue);
 						break;
 					case 'S':
-						Send.Table(TableCommand.Sit, entity);
 						break;
 				}
 			}

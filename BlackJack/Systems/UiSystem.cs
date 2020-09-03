@@ -2,7 +2,7 @@ using ECS;
 
 namespace CardGame.Systems
 {
-	public class GameSystem : EntitySystem, RunSystem, InitSystem
+	public class UiSystem : EntitySystem, RunSystem, InitSystem
 	{
 		public void Run()
 		{

@@ -1,4 +1,3 @@
-using CardGame.Events;
 using ECS;
 
 namespace CardGame.Systems
@@ -11,12 +10,6 @@ namespace CardGame.Systems
 
 		public void Init()
 		{
-			Hub.Sub<GameEvent>(this, OnGameEvent);
-		}
-
-		private void OnGameEvent(GameEvent e)
-		{
-			
 		}
 	}
 }

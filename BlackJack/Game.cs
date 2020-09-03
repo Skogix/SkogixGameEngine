@@ -25,6 +25,7 @@ namespace CardGame
 			var dealer = new Dealer();
 			var deck = new Deck();
 			var table = new Table(dealer, deck);
+			TableSystem.Table = table;
 
 			while (true)
 			{

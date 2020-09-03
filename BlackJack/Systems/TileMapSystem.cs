@@ -1,6 +1,4 @@
 using System.Linq;
-using System.Numerics;
-using CardGame.Events;
 using ECS;
 
 namespace CardGame.Systems
@@ -58,7 +56,8 @@ namespace CardGame.Systems
 					TileMap.Tiles[x, y] = tile;
 					
 					var drawable = GetTileDrawable(x, y);
-					Send.UiPrint(x,y,drawable.Glyph.ToString(), drawable.Color);
+					//Send.UiPrint(x,y,drawable.Glyph.ToString(), drawable.Color);
+					// ToDo: Uppdatera härifrån
 				}
 			}
 

@@ -1,8 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.CompilerServices;
-using static ECS.T;
 
 namespace ECS
 {
@@ -13,6 +11,7 @@ namespace ECS
 		private readonly int _id;
 
 		// --------------- ctor
+		public static Entity New() => Skogix.EntityIdFactory.Get();
 		private Entity(int id)
 		{
 			_id = id;
@@ -21,10 +20,11 @@ namespace ECS
 		}
 
 		public Entity(Entity sourceEntity) : this(sourceEntity._componentsByType.Values.Select(c => c.Clone() as Component)){}
-		public Entity() : this(Skogix.IdFactory.Next()) {}
-		public Entity(IEnumerable<Component> components) : this(Skogix.IdFactory.Next()) => components.ToList().ForEach(Add);
-		public Entity(Component component) : this(Skogix.IdFactory.Next()) => Add(component);
+		public Entity() : this(Skogix.EntityIdFactory.Next()) {}
+		public Entity(IEnumerable<Component> components) : this(Skogix.EntityIdFactory.Next()) => components.ToList().ForEach(Add);
+		public Entity(Component component) : this(Skogix.EntityIdFactory.Next()) => Add(component);
 		public Entity(ITemplate template) : this(template.Components){}
+		
 		
 		public bool Contains(Type componentType) => _componentsByType.ContainsKey(componentType);
 		public bool Contains(IEnumerable<Type> componentTypes) => componentTypes.All(_componentsByType.ContainsKey);
@@ -33,7 +33,7 @@ namespace ECS
 		// --------------- api
 		public string Hash => $"{_id}-{_gen}";
 
-		public string Info => $"Hash: {Hash} \nComponents ({_componentsByType.Count})";
+		public string Info => $"Hash: {Hash} \nComponents ({_componentsByType.Count})\nName: {GetType().Name}";
 
 		public void Add(Component component)
 		{

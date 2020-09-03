@@ -13,14 +13,14 @@ namespace ECS
 			_handlers.Add(GetHandler<T>(sub, handler));
 		}
 
-		public static void Pub<T>(object sender, T data = default) where T: IEvent
+		public static void Pub<T>(object sender, T data = default)
 		{
 			foreach (var handler in _handlers.Where(h => h.Type == typeof(T)))
 				if (handler.Action is Action<T> sendAction)
 					sendAction(data);
 		}
 
-		public static void Pub<T>(T data = default) where T : IEvent => Pub(null, data);
+		public static void Pub<T>(T data = default) => Pub(null, data);
 
 		private static Handler GetHandler<T>(object sub, Delegate handler)
 		{

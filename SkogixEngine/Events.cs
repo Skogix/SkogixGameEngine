@@ -2,7 +2,7 @@ using System;
 
 namespace ECS
 {
-	public class ComponentAddedEvent
+	public class ComponentAddedEvent : IEvent
 	{
 		public Entity Entity;
 		public Type ComponentType;
@@ -14,7 +14,7 @@ namespace ECS
 		}
 	}
 	
-	public class ComponentRemovedEvent
+	public class ComponentRemovedEvent : IEvent
 	{
 		public Entity Entity;
 		public Type ComponentType;
@@ -24,5 +24,10 @@ namespace ECS
 			Entity = entity;
 			ComponentType = componentType;
 		}
+	}
+
+	public interface IEvent
+	{
+		
 	}
 }

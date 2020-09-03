@@ -15,10 +15,12 @@ namespace ECS
 
 		public static IEnumerable<T> Pull<T>(Type type = default) where T : class
 		{
-			return from o in type != null
+			var output = from o in type != null
 					? _bus.Where(o => o.GetType() == type)
 					: _bus.Where(o => o.GetType() == typeof(T))
 				select o as T;
+			_bus.RemoveAll(o => o.GetType() == typeof(T));
+			return output;
 		}
 	}
 }

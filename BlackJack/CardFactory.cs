@@ -1,9 +1,6 @@
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using ECS;
 
-namespace BlackJack
+namespace CardGame
 {
 	public enum ECardColor
 	{
@@ -64,22 +61,18 @@ namespace BlackJack
 					throw new ArgumentOutOfRangeException(nameof(eCardValue), eCardValue, null);
 			}
 		}
-		public static Entity GetCard(ECardColor eCardColor, ECardValue eCardValue)
-		{
-			var entity = new Entity();
-			var card = new Card(GetSuitComponent(eCardColor), GetValueComponent(eCardValue));
-			entity.Add(card);
-			return entity;
-		}
+		public static Card GetCard(ECardColor eCardColor, ECardValue eCardValue) => new Card(GetSuitComponent(eCardColor), GetValueComponent(eCardValue));
 
-		public static List<Entity> GetDeck()
+		public static Deck GetDeck()
 		{
-			var output = new List<Entity>();
+			var output = new Deck();
+			
 			foreach (ECardColor color in Enum.GetValues(typeof(ECardColor)))
 			{
 				foreach (ECardValue value in Enum.GetValues(typeof(ECardValue)))
 				{
-					output.Add(GetCard(color, value));
+					var card = GetCard(color, value);
+					output.Cards.Add(card);
 				}
 			}
 			return output;

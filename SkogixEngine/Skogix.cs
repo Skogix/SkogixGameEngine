@@ -13,9 +13,9 @@ namespace ECS
 		private static Dictionary<string, Type> _componentTypeByName;
 		private static List<Type> _componentTypes;
 		
-		private static List<EntitySystem> _entitySystems;
-		private static List<RunSystem> _runSystems;
-		private static List<InitSystem> _initSystems;
+		public static List<EntitySystem> _entitySystems;
+		public static List<RunSystem> _runSystems;
+		public static List<InitSystem> _initSystems;
 
 		public static Dictionary<string, Entity> _entityByHash;
 		public static Dictionary<Type, Entity> _entityByType;

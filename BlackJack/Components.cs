@@ -119,7 +119,7 @@ namespace CardGame
 
 	public class Table : Entity
 	{
-		public List<Player> Players { get; set; }
+		public static List<Player> Players { get; set; }
 		public Dealer Dealer;
 		public Deck Deck;
 

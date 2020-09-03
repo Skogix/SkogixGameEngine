@@ -1,9 +1,4 @@
 ﻿using System;
-using System.Reflection.PortableExecutable;
-using System.Runtime.CompilerServices;
-using CardGame;
-using CardGame.Events;
-using CardGame.Systems;
 using ECS;
 
 namespace BlackJackUI
@@ -15,12 +10,7 @@ namespace BlackJackUI
 
 		static void Main(string[] args)
 		{
-			Hub.Sub<UiEvent>(null, OnUiEvent);
-			Game.Run(GameWidth, GameHeight);
 		}
-
-		private static void OnUiEvent(UiEvent e) => PrintToConsole(e.X, e.Y, e.Msg, e.Color);
-
 
 		internal static void PrintToConsole(in int x, in int y, in string message, ConsoleColor color)
 		{

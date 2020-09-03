@@ -1,5 +1,3 @@
-using System;
-using CardGame.Events;
 using ECS;
 using static System.Console;
 
@@ -10,7 +8,7 @@ namespace CardGame.Systems
 		public void Init()
 		{
 			AddFilter<Input>();
-			AddFilter<Player>();
+			AddFilter<Actor>();
 		}
 		public void Run()
 		{
@@ -19,7 +17,7 @@ namespace CardGame.Systems
 				var key = entity.Get<Input>().Key = ReadKey(true).KeyChar;
 				switch (char.ToUpper(key))
 				{
-					case '*': Console.WriteLine("Huhuhu");
+					case 'R': 
 						break;
 					case 'S':
 						break;

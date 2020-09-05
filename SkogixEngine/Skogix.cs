@@ -63,7 +63,8 @@ namespace ECS
 			{
 				var output = new Entity();
 				_entityByHash.Add(output.Hash, output);
-				_entityByType.Add(output.GetType(), output);
+				if(_entityByType.ContainsKey(output.GetType()))
+					_entityByType.Add(output.GetType(), output);
 				return output;
 			}
 		}

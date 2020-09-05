@@ -13,6 +13,7 @@ namespace ECS {
 			_id = id;
 			_gen = 0;
 			ComponentsByType = new Dictionary<Type, Component>();
+			
 			W = world;
 		}
 		public World W { get; }
@@ -29,7 +30,7 @@ namespace ECS {
 			var componentType = component.GetType();
 			var componentId = World.GetComponentId(componentType);
 			ComponentsByType[componentType] = component;
-			W.MessageManager.EventManager.Publish(this, new ComponentAddedEvent(this, component));
+			W.MessageManager.Publish(new ComponentAddedEvent(this, component));
 		}
 		internal void AddComponents(IEnumerable<Component> components) { components.ToList().ForEach(AddComponent); }
 		public T GetComponent<T>() where T : Component { return ComponentsByType[typeof(T)] as T; }
@@ -37,7 +38,7 @@ namespace ECS {
 		internal void RemoveComponent<T>() { RemoveComponent(typeof(T)); }
 		internal void RemoveComponent(Type componentType) {
 			ComponentsByType.Remove(componentType);
-			W.MessageManager.EventManager.Publish(this, new ComponentRemovedEvent(this, componentType));
+			W.MessageManager.Publish(this, new ComponentRemovedEvent(this, componentType));
 		}
 	}
 }

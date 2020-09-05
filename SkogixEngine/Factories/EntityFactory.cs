@@ -9,7 +9,11 @@ namespace ECS {
 		public EntityFactory(World world) { W = world; }
 		public World W { get; }
 		private static int Next() { return _idCount++; }
-		private Entity NewEntity() { return new Entity(W, Next()); }
+		private Entity NewEntity() {
+			var e = new Entity(W, Next());
+			W.MessageManager.Publish(new EntityAddedEvent(e));
+			return e;
+		}
 		private List<Component> CloneComponents(Entity sourceEntity) {
 			return sourceEntity.ComponentsByType.Values.Select(c => c.Clone() as Component).ToList();
 		}

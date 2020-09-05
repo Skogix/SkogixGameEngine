@@ -1,4 +1,5 @@
 ﻿#region
+using System;
 using ECS;
 #endregion
 
@@ -8,12 +9,23 @@ namespace RogueLikeUI {
 			var w = new World();
 			var attacker = w.EntityFactory.Get(new PlayerTemplate("Skogix"));
 			var defender = w.EntityFactory.Get(new MonsterTemplate());
+			w.AddSystem(new InputSystem(w));
 			w.AddSystem(new ModSystem(w));
 			w.InitSystems();
-			var commandManager = w.MessageManager.CommandManager;
-			w.MessageManager.CommandManager.AddCommand<AttackCommand>(new AttackCommand(attacker, defender));
-			commandManager.AddCommand<AttackCommand>(new AttackCommand(attacker, defender));
-			commandManager.RunCommands();
+			w.MessageManager.CommandManager.AddCommand(new AttackCommand(attacker, defender));
+			w.MessageManager.CommandManager.RunCommands();
+			Console.WriteLine(w.ToString());
+			w.Run();
+		}
+	}
+	internal class InputSystem : EntitySystem, IRunSystem {
+		public InputSystem(World world) : base(world) {
+			AddFilter(typeof(NameComponent));
+		}
+		public void Run() {
+			foreach (var entity in Entities) {
+				Console.WriteLine(entity.GetComponent<NameComponent>().Name);
+			}
 		}
 	}
 }

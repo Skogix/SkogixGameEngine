@@ -4,35 +4,36 @@ using System.Linq;
 
 namespace ECS {
 	public class Entity {
-		public readonly Dictionary<Type, Component> _componentsByType;
+		internal readonly Dictionary<Type, Component> ComponentsByType;
 		private readonly int _gen;
 		private readonly int _id;
-		internal Entity(int id) {
+		public World W { get; private set; }
+		internal Entity(World world, int id) {
 			_id = id;
 			_gen = 0;
-			_componentsByType = new Dictionary<Type, Component>();
+			ComponentsByType = new Dictionary<Type, Component>();
+			W = world;
 		}
-		public string Hash => $"{_id}-{_gen}";
-		public string Info => $"Hash: {Hash} \nComponents ({_componentsByType.Count})\nName: {GetType().Name}";
-		public bool Contains(Type componentType) { return _componentsByType.ContainsKey(componentType); }
-		public bool Contains(IEnumerable<Type> componentTypes) {
-			return componentTypes.All(_componentsByType.ContainsKey);
+		public string GetHash => $"{_id}-{_gen}";
+		internal string GetInfo => $"Hash: {GetHash} \nComponents ({ComponentsByType.Count})\nName: {GetType().Name}";
+		internal bool ContainsComponent(Type componentType) { return ComponentsByType.ContainsKey(componentType); }
+		internal bool ContainsComponent(IEnumerable<Type> componentTypes) {
+			return componentTypes.All(ComponentsByType.ContainsKey);
 		}
-		public bool Contains(params Type[] componentTypes) { return Contains(componentTypes as IEnumerable<Type>); }
-		public void Add(Component component) {
+		internal bool ContainsComponent(params Type[] componentTypes) { return ContainsComponent(componentTypes as IEnumerable<Type>); }
+		internal void AddComponent(Component component) {
 			var componentType = component.GetType();
-			var componentId = Skogix.GetComponentId(componentType);
-			_componentsByType[componentType] = component;
-			Hub.Pub(this, new ComponentAddedEvent(this, component));
+			var componentId = World.GetComponentId(componentType);
+			ComponentsByType[componentType] = component;
+			W.Hub.Pub(this, new ComponentAddedEvent(this, component));
 		}
-		public T Get<T>() where T : Component { return _componentsByType[typeof(T)] as T; }
-		public void Remove(Component component) { Remove(component.GetType()); }
-		public void Remove<T>() { Remove(typeof(T)); }
-		public void Remove(Type componentType) {
-			_componentsByType.Remove(componentType);
-			Hub.Pub(this, new ComponentRemovedEvent(this, componentType));
+		internal void AddComponents(IEnumerable<Component> components) { components.ToList().ForEach(AddComponent); }
+		public T GetComponent<T>() where T : Component { return ComponentsByType[typeof(T)] as T; }
+		internal void RemoveComponent(Component component) { RemoveComponent(component.GetType()); }
+		internal void RemoveComponent<T>() { RemoveComponent(typeof(T)); }
+		internal void RemoveComponent(Type componentType) {
+			ComponentsByType.Remove(componentType);
+			W.Hub.Pub(this, new ComponentRemovedEvent(this, componentType));
 		}
-		public void Add(IEnumerable<Component> components) { components.ToList().ForEach(Add); }
-		public void Add(params Component[] components) { components.ToList().ForEach(Add); }
 	}
 }

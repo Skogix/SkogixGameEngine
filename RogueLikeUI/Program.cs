@@ -3,14 +3,14 @@
 namespace RogueLikeUI {
 	internal class Program {
 		private static void Main(string[] args) {
-			Skogix.Init();
-			var eFactory = new EntityFactory();
-			var attacker = eFactory.Get(new PlayerTemplate());
-			var defender = eFactory.Get(new MonsterTemplate());
-			Skogix.AddSystem(new ModSystem());
-			Skogix.InitSystems();
-			var commandManager = new CommandManager();
-			commandManager.AddCommand<AttackCommand>(new AttackCommand(attacker, defender));
+			var w = new World();
+			w.Init();
+			var attacker = w.EntityFactory.Get(new PlayerTemplate("Skogix"));
+			var defender = w.EntityFactory.Get(new MonsterTemplate());
+			w.AddSystem(new ModSystem());
+			w.InitSystems();
+			var commandManager = w.CommandManager;
+			w.CommandManager.AddCommand<AttackCommand>(new AttackCommand(attacker, defender));
 			commandManager.AddCommand<AttackCommand>(new AttackCommand(attacker, defender));
 			commandManager.RunCommands();
 		}

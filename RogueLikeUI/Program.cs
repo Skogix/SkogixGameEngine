@@ -20,7 +20,7 @@ namespace RogueLikeUI {
 			
 			var commandManager = new CommandManager();
 			
-			var attackCommand = new AttackCommand(attacker, defender, 5);
+			var attackCommand = new AttackCommand(attacker, defender);
 			commandManager.AddCommand<AttackCommand>(attackCommand);
 			
 			commandManager.RunCommands();
@@ -40,7 +40,7 @@ namespace RogueLikeUI {
 	}
 	
 	internal sealed class AttackComponent : Component {
-		public int AttackDamage { get; set; }
+		public int AttackDamage { get; set; } = 10;
 	}
 	internal sealed class HealthComponent : Component {
 		public int Health { get; set; } = 100;
@@ -50,11 +50,11 @@ namespace RogueLikeUI {
 		void Execute();
 	}
 	public class AttackCommand : ICommand {
-		public AttackCommand(Entity attacker, Entity defender, int attackDamage) {
+		public AttackCommand(Entity attacker, Entity defender) {
 			Defender = defender;
 			Attacker = attacker;
-			AttackDamage = attackDamage;
 			IsCompleted = false;
+			AttackDamage = attacker.Get<AttackComponent>().AttackDamage;
 		}
 		public bool IsCompleted { get; set; }
 		public int AttackDamage { get; set; }

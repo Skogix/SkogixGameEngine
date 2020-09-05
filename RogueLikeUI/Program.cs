@@ -1,4 +1,6 @@
-﻿using ECS;
+﻿#region
+using ECS;
+#endregion
 
 namespace RogueLikeUI {
 	internal class Program {
@@ -7,10 +9,10 @@ namespace RogueLikeUI {
 			w.Init();
 			var attacker = w.EntityFactory.Get(new PlayerTemplate("Skogix"));
 			var defender = w.EntityFactory.Get(new MonsterTemplate());
-			w.AddSystem(new ModSystem());
+			w.AddSystem(new ModSystem(w));
 			w.InitSystems();
-			var commandManager = w.CommandManager;
-			w.CommandManager.AddCommand<AttackCommand>(new AttackCommand(attacker, defender));
+			var commandManager = w.MessageManager.CommandManager;
+			w.MessageManager.CommandManager.AddCommand<AttackCommand>(new AttackCommand(attacker, defender));
 			commandManager.AddCommand<AttackCommand>(new AttackCommand(attacker, defender));
 			commandManager.RunCommands();
 		}

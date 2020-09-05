@@ -1,4 +1,6 @@
+#region
 using ECS;
+#endregion
 
 namespace RogueLikeUI {
 	public class HealthComponent : Component {

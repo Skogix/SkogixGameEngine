@@ -1,7 +1,7 @@
+#region
 using System;
-using System.Collections.Generic;
-using System.Data.Common;
 using ECS;
+#endregion
 
 namespace RogueLikeUI {
 	public class AttackCommand : ICommand {

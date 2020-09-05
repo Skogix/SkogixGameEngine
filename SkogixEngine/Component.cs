@@ -1,4 +1,6 @@
+#region
 using System;
+#endregion
 
 namespace ECS {
 	public abstract class Component : ICloneable {

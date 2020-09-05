@@ -1,7 +1,8 @@
+#region
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using RogueLikeUI;
+#endregion
 
 namespace ECS {
 	public class World {
@@ -14,13 +15,10 @@ namespace ECS {
 		private Dictionary<string, Entity> _entityByHash = new Dictionary<string, Entity>();
 		private Dictionary<Type, Entity> _entityByType = new Dictionary<Type, Entity>();
 		public EntityFactory EntityFactory;
-		public Hub Hub;
-		public CommandManager CommandManager;
-		
+		public MessageManager MessageManager;
 		public World() {
-			Hub = new Hub(this);
+			MessageManager = new MessageManager(this);
 			EntityFactory = new EntityFactory(this);
-			CommandManager = new CommandManager(this);
 		}
 		private void _init() {
 			var domain = AppDomain.CurrentDomain; // nuvarande domain, dvs inte SkogixEngine utan där den callas

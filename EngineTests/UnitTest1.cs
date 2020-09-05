@@ -1,4 +1,6 @@
+#region
 using NUnit.Framework;
+#endregion
 
 namespace EngineTests {
 	public class Tests {

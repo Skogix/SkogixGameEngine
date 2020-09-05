@@ -1,15 +1,15 @@
-using System;
+#region
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
+#endregion
 
 namespace ECS {
 	public class EntityFactory {
 		private static int _idCount;
-		private static int Next() { return _idCount++; }
-		private Entity NewEntity() => new Entity(W, Next());
-		public World W { get; }
 		public EntityFactory(World world) { W = world; }
+		public World W { get; }
+		private static int Next() { return _idCount++; }
+		private Entity NewEntity() { return new Entity(W, Next()); }
 		private List<Component> CloneComponents(Entity sourceEntity) {
 			return sourceEntity.ComponentsByType.Values.Select(c => c.Clone() as Component).ToList();
 		}

@@ -1,19 +1,24 @@
+#region
 using System;
 using System.Collections.Generic;
 using System.Linq;
+#endregion
 
 namespace ECS {
 	public abstract class EntitySystem {
 		private readonly List<Type> _filters;
 		private protected readonly List<Entity> Entities;
-		public World World { get; private set; }
-		protected EntitySystem() {
+		protected EntitySystem(World world) {
 			Entities = new List<Entity>();
 			_filters = new List<Type>();
-			Hub.Sub<ComponentAddedEvent>(this, OnComponentAdded);
-			Hub.Sub<ComponentRemovedEvent>(this, OnComponentRemoved);
+			World = world;
+			World.MessageManager.EventManager.Subscribe<ComponentAddedEvent>(this, OnComponentAdded);
+			World.MessageManager.EventManager.Subscribe<ComponentRemovedEvent>(this, OnComponentRemoved);
 		}
-		protected EntitySystem(params Type[] componentTypes) : this() { componentTypes.ToList().ForEach(AddFilter); }
+		protected EntitySystem(World world, params Type[] componentTypes) : this(world) {
+			componentTypes.ToList().ForEach(AddFilter);
+		}
+		public World World { get; }
 		internal void AddFilter<T>() { AddFilter(typeof(T)); }
 		private void AddFilter(Type componentType) {
 			if (_filters.Contains(componentType) == false) _filters.Add(componentType);

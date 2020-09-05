@@ -1,4 +1,6 @@
+#region
 using System;
+#endregion
 
 namespace ECS {
 	internal class ComponentAddedEvent : IEvent {

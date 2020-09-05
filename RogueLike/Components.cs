@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using ECS;
 
 namespace RogueLikeUI {
@@ -13,4 +14,5 @@ namespace RogueLikeUI {
 		public AttackComponent(int attackDamage) { AttackDamage = attackDamage; }
 		public int AttackDamage { get; set; }
 	}
+
 }

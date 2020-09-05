@@ -6,7 +6,7 @@ namespace RogueLikeUI {
 		public void Init() { Hub.Sub<AttackCommand>(this, OnAttackCommand); }
 		private void OnAttackCommand(AttackCommand c) {
 			Console.WriteLine("Lägger till 5 skada pga någon anledning.");
-			c.AttackDamage += 45;
+			c.AttackDamage += 5;
 		}
 	}
 }

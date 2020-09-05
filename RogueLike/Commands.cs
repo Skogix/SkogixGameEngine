@@ -1,12 +1,15 @@
 #region
 using System.Collections.Generic;
 using ECS;
+using ECS.Commands;
 #endregion
 
 namespace RogueLikeUI {
 	public class AttackCommand : ICommand{
+		private readonly CommandContainer _commandContainer;
 		private static int _idCount;
-		public AttackCommand(Entity attacker, Entity defender) {
+		public AttackCommand(CommandContainer commandContainer, Entity attacker, Entity defender) {
+			_commandContainer = commandContainer;
 			Defender = defender;
 			Attacker = attacker;
 			IsCompleted = false;
@@ -21,12 +24,6 @@ namespace RogueLikeUI {
 			Defender.GetComponent<HealthComponent>().Health -= AttackDamage;
 			Attacker.W.MessageManager.Publish(Attacker, new DamageDoneEvent(Attacker, Defender, AttackDamage));
 		}
-		public SortedDictionary<int, ICommand> Commands { get; }
-		public void AddCommand(ICommand command) {
-			Commands.Add(Next(), command);
-		}
-		private static int Next() => _idCount++;
-		
 		public string Description { get; }
 	}
 	public class DamageDoneEvent : IEvent{

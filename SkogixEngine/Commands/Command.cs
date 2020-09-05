@@ -1,10 +1,14 @@
 using System.Collections.Generic;
 
 namespace ECS.Commands {
-	public class Command{
-		public List<ICommand> Commands { get; private set; } = new List<ICommand>();
-		public Command(ICommand command) {
-			Commands.Add(command);
+	
+	public class CommandContainer{
+		public CommandContainer() {
+			Items = new List<ICommand>();
 		}
+		public void AddItem(ICommand item) {
+			Items.Add(item);
+		}
+		public List<ICommand> Items { get; set; }
 	}
 }

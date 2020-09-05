@@ -56,7 +56,9 @@ namespace ECS {
 			if (entitySystem is IRunSystem runSystem) _runSystems.Add(runSystem);
 			if (entitySystem is InitSystem initSystem) _initSystems.Add(initSystem);
 		}
-		public void Run() { _runSystems.ForEach(s => s.Run()); }
+		public void Run() {
+			_runSystems.ForEach(s => s.Run());
+		}
 		public void InitSystems() { _initSystems.ForEach(s => s.Init()); }
 
 		public virtual void Destroy() {

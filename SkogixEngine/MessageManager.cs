@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using ECS.Commands;
 #endregion
 
 namespace ECS {
@@ -30,14 +31,14 @@ namespace ECS {
 		public void Subscribe<T>(object sub, Action<T> handler) {
 			Handlers.Add(GetHandler<T>(sub, handler));
 		}
-		public void Publish<T>(object sender, T data) where T: IMessage {
-			World.DebugSystem.Debug(data.Description);
+		public void Publish<T>(object sender, T data) {
+			if (data is IMessage iMessage) World.DebugSystem.Debug(iMessage.Description);
 			foreach (var handler in Handlers.Where(h => h.Type == typeof(T)))
 				if (handler.Action is Action<T> sendAction) {
 					sendAction(data);
 				}
 		}
-		public void Publish<T>(T data = default) where T : IMessage { Publish(null, data); }
+		public void Publish<T>(T data = default) { Publish(null, data); }
 		
 		private static Handler GetHandler<T>(object sub, Delegate handler) {
 			return new Handler {Action = handler, Type = typeof(T), Sender = new WeakReference(sub)};
@@ -50,18 +51,22 @@ namespace ECS {
 	}
 	public class CommandManager{
 		private static int IdCount { get; set; }
-		private Dictionary<int, ICommand> AllCommands { get; } = new Dictionary<int, ICommand>();
+		private List<CommandContainer> CommandContainers = new List<CommandContainer>();
 		private MessageManager MessageManager { get; }
 		internal static int Next() { return IdCount++; }
 		
-		public CommandManager(MessageManager messageManager) { MessageManager = messageManager; }
-		public void AddCommand(ICommand command){
-			MessageManager.Publish(command);
-			AllCommands.Add(Next(), command);
+		public CommandManager(MessageManager messageManager){
+			MessageManager = messageManager;
+		}
+		public void AddCommandContainer<T>(CommandContainer command) where T: class, ICommand{
+			MessageManager.Publish<T>(command as T);
+			CommandContainers.Add(command);
 		}
 		public void RunCommands() {
-			foreach (ICommand command in AllCommands.Values) {
-				command.Execute();
+			foreach (CommandContainer commandContainer in CommandContainers) {
+				foreach (var command in commandContainer.Items) {
+					command.Execute();
+				}
 			}
 		}
 	}

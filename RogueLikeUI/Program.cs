@@ -1,6 +1,8 @@
 ﻿#region
 using System;
+using System.Collections.Generic;
 using ECS;
+using ECS.Commands;
 #endregion
 
 namespace RogueLikeUI {
@@ -12,13 +14,15 @@ namespace RogueLikeUI {
 			w.AddSystem(new InputSystem(w));
 			w.AddSystem(new ModSystem(w));
 			w.InitSystems();
-			//w.MessageManager.CommandManager.AddCommand(new CommandContainer());
+			var commandContainer = new CommandContainer();
+			var command = new AttackCommand(commandContainer, attacker, defender);
+			commandContainer.AddItem(command);
+			w.MessageManager.CommandManager.AddCommandContainer<AttackCommand>(commandContainer);
 			// w.MessageManager.CommandManager.AddCommand(new AttackCommand(attacker, defender));
-			// w.MessageManager.CommandManager.RunCommands();
+			w.MessageManager.CommandManager.RunCommands();
 			w.Run();
 		}
 	}
-	internal class CommandContainer { }
 	internal class InputSystem : EntitySystem, IRunSystem {
 		public InputSystem(World world) : base(world) {
 			AddFilter(typeof(NameComponent));

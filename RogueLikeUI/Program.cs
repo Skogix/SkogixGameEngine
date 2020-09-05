@@ -21,7 +21,7 @@ namespace RogueLikeUI {
 			// w.MessageManager.CommandManager.AddCommand(new AttackCommand(attacker, defender));
 			w.MessageManager.CommandManager.RunCommands();
 			w.Run();
-			//
+			//aaaa
 		}
 	}
 	internal class InputSystem : EntitySystem, IRunSystem {

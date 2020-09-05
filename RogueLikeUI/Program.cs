@@ -12,12 +12,13 @@ namespace RogueLikeUI {
 			w.AddSystem(new InputSystem(w));
 			w.AddSystem(new ModSystem(w));
 			w.InitSystems();
-			w.MessageManager.CommandManager.AddCommand(new AttackCommand(attacker, defender));
-			w.MessageManager.CommandManager.RunCommands();
-			Console.WriteLine(w.ToString());
+			//w.MessageManager.CommandManager.AddCommand(new CommandContainer());
+			// w.MessageManager.CommandManager.AddCommand(new AttackCommand(attacker, defender));
+			// w.MessageManager.CommandManager.RunCommands();
 			w.Run();
 		}
 	}
+	internal class CommandContainer { }
 	internal class InputSystem : EntitySystem, IRunSystem {
 		public InputSystem(World world) : base(world) {
 			AddFilter(typeof(NameComponent));

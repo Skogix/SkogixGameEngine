@@ -16,9 +16,13 @@ namespace ECS {
 		private Dictionary<Type, Entity> _entityByType = new Dictionary<Type, Entity>();
 		public EntityFactory EntityFactory;
 		public MessageManager MessageManager;
+		public DebugSystem DebugSystem;
 		public World() {
 			MessageManager = new MessageManager(this);
 			EntityFactory = new EntityFactory(this);
+			DebugSystem = new DebugSystem(this);
+			_init();
+			
 		}
 		private void _init() {
 			var domain = AppDomain.CurrentDomain; // nuvarande domain, dvs inte SkogixEngine utan där den callas

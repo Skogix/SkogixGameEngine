@@ -1,18 +1,17 @@
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
+#region
 using ECS;
 using ECS.Interfaces;
 using RogueLike.Components;
+#endregion
 
 namespace RogueLike.Commands {
 	public class MoveCommand : ICommand {
-		public Transform Transform { get; set; }
-		public Destination Destination { get; set; }
 		public MoveCommand(Transform transform, Destination destination) {
 			Transform = transform;
 			Destination = destination;
 		}
+		public Transform Transform { get; set; }
+		public Destination Destination { get; set; }
 		public void Execute() {
 			Transform.X += Destination.X;
 			Transform.X += Destination.Y;
@@ -26,7 +25,6 @@ namespace RogueLike.Commands {
 		public bool IsExecuted { get; set; }
 	}
 	public class MovementHandler : CommandHandler {
-		
 		/*
 		private readonly List<ICommand> _commands;
 		private ICommand _command;

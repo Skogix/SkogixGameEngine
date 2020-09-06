@@ -22,10 +22,9 @@ namespace RogueLike.Systems {
 					'o' => new MoveCommand(t, new Destination(0, +1)),
 					'a' => new MoveCommand(t, new Destination(-1, 0)),
 					'e' => new MoveCommand(t, new Destination(+1, 0)),
-					_ => new MoveCommand(t, new Destination(0, 0))
+					_ => new MoveCommand(t, new Destination(0, 0)),
 				};
 			}
-			
 		}
 	}
 }

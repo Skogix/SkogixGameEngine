@@ -1,12 +1,14 @@
+#region
 using ECS;
 using ECS.Interfaces;
 using ECS.Systems;
 using RogueLike.Components;
+#endregion
 
 namespace RogueLike.Systems {
 	public class MoveSystem : EntitySystem, IRunSystem, InitSystem {
-		public World World { get; }
 		public MoveSystem(World world) : base(world) { World = world; }
+		public World World { get; }
 		public void Init() {
 			AddFilter(typeof(Destination));
 			AddFilter(typeof(Transform));
@@ -27,12 +29,8 @@ namespace RogueLike.Systems {
 				Entity = entity;
 				Component = component;
 			}
-			public void Execute() {
-				Entity.RemoveComponent(Component);
-			}
-			public void UndoAction() {
-				Entity.Add(Component);
-			}
+			public void Execute() { Entity.RemoveComponent(Component); }
+			public void UndoAction() { Entity.Add(Component); }
 			public bool IsExecuted { get; set; }
 		}
 	}

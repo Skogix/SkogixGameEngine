@@ -1,5 +1,7 @@
+#region
 using System.Collections.Generic;
 using ECS.Interfaces;
+#endregion
 
 namespace ECS {
 	public interface ICommandHandler {

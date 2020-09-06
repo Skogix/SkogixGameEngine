@@ -19,17 +19,16 @@ namespace ECS {
 		public World World { get; }
 		public string EntityComponentKey(Entity e, Type ct) { return $"{e.GetHash}-{ct.Name}"; }
 		//public T Get<T>(Entity e) where T : Component => GetAllComponentsOnEntity(e).FirstOrDefault(c => c.GetType() == typeof(T)) as T;
-		public T Get<T>(Entity e) where T : Component => e.tmpComponents.Find(c => c.GetType() == typeof(T)) as T;
+		public T Get<T>(Entity e) where T : Component {
+			return e.tmpComponents.Find(c => c.GetType() == typeof(T)) as T;
+		}
 		public List<Entity> GetAllEntitiesWithComponent<T>() where T : Component {
 			var output = new List<Entity>();
 			Tuples.Where(t => t.Item2.GetType() == typeof(T)).ToList().ForEach(t => output.Add(t.Item1));
 			return output;
 		}
-		public void AddComponent(Entity e, Component c) {
-			World.EventManager.Publish(new ComponentAddedEvent(e, c));
-		}
+		public void AddComponent(Entity e, Component c) { World.EventManager.Publish(new ComponentAddedEvent(e, c)); }
 		public void RemoveComponent(Entity e, Component c) {
-			
 			World.EventManager.Publish(new ComponentRemovedEvent(e, c));
 		}
 		public List<Component> GetAllComponentsOnEntity(Entity e) {
@@ -72,6 +71,6 @@ namespace ECS {
 			Map.Remove(EntityComponentKey(e.Entity, e.Component.GetType()));
 			e.Entity.tmpComponents.Remove(e.Component);
 		}
-		private void OnEntityAdded(EntityAddedEvent e) => AllEntities.Add(e.Entity);
+		private void OnEntityAdded(EntityAddedEvent e) { AllEntities.Add(e.Entity); }
 	}
 }

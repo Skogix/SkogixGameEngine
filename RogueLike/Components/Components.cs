@@ -27,11 +27,11 @@ namespace RogueLike.Components {
 		public char Glyph { get; set; }
 	}
 	public class Destination : Component {
-		public int X { get; set; }
-		public int Y { get; set; }
 		public Destination(int x, int y) {
 			X = x;
 			Y = y;
 		}
+		public int X { get; set; }
+		public int Y { get; set; }
 	}
 }

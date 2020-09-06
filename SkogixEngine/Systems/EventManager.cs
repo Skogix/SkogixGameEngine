@@ -1,6 +1,5 @@
 #region
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using ECS.Interfaces;
@@ -8,8 +7,8 @@ using ECS.Interfaces;
 
 namespace ECS.Systems {
 	public class EventManager {
-		private readonly List<Handler> Handlers = new List<Handler>();
 		private readonly Dictionary<int, ICommand> _bus = new Dictionary<int, ICommand>();
+		private readonly List<Handler> Handlers = new List<Handler>();
 		internal EventManager(World world) { World = world; }
 		internal World World { get; }
 		internal void Subscribe<T>(object sub, Action<T> handler) { Handlers.Add(GetHandler<T>(sub, handler)); }
@@ -36,19 +35,18 @@ namespace ECS.Systems {
 		internal IEnumerable<ICommand> PullAll() {
 			var output = _bus.Values.ToArray();
 			_bus.Clear();
-			return output as IEnumerable<ICommand>;
+			return output;
+		}
+		public void ExecuteAll() {
+			foreach (var command in _bus.Values.Where(c => c.IsExecuted == false)) {
+				command.Execute();
+				command.IsExecuted = true;
+			}
 		}
 		private class Handler {
 			public Delegate Action { get; set; }
 			public Type Type { get; set; }
 			public object Sender { get; set; }
-		}
-		public void ExecuteAll() {
-			foreach (ICommand command in _bus.Values.Where(c => c.IsExecuted == false)) {
-				command.Execute();
-				command.IsExecuted = true;
-			}
-			
 		}
 	}
 }

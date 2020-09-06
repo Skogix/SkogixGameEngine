@@ -1,7 +1,6 @@
 #region
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using ECS.Interfaces;
 #endregion
 
@@ -20,17 +19,11 @@ namespace ECS.Systems {
 		protected internal void AddFilter(Type componentType) {
 			if (_filters.Contains(componentType) == false) _filters.Add(componentType);
 			var huhu = new List<Entity>();
-			foreach (var filter in _filters) {
-				foreach (var entity in Entities) {
-					if (entity.tmpComponents.Exists(c => c.GetType() == filter) == false) {
-						huhu.Add(entity);
-					} 
-				}
-			}
-
-			foreach (var entity in huhu) {
-				Entities.Remove(entity);
-			}
+			foreach (var filter in _filters)
+			foreach (var entity in Entities)
+				if (entity.tmpComponents.Exists(c => c.GetType() == filter) == false)
+					huhu.Add(entity);
+			foreach (var entity in huhu) Entities.Remove(entity);
 		}
 		private void OnComponentRemoved(ComponentRemovedEvent e) {
 			if (World.EntityManager.Has(e.Entity, _filters) == false) Entities.Remove(e.Entity);

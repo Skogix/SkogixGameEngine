@@ -21,12 +21,10 @@ namespace RogueLike.Systems {
 		}
 		private void InitMap() {
 			for (var x = 0; x < Width; x++)
-				for (var y = 0; y < Height; y++) {
-					Tiles[x, y] = World.CreateEntity(new Drawable('.'), new Transform(x, y));
-					this.Pub(new PrintEvent(x,y,'.'));
-				
+			for (var y = 0; y < Height; y++) {
+				Tiles[x, y] = World.CreateEntity(new Drawable('.'), new Transform(x, y));
+				this.Pub(new PrintEvent(x, y, '.'));
 			}
-			
 		}
 	}
 }

@@ -1,10 +1,12 @@
+#region
 using ECS.Interfaces;
+#endregion
 
 namespace RogueLike.Events {
 	public class PrintEvent : IEvent {
+		public readonly char Glyph;
 		public readonly int X;
 		public readonly int Y;
-		public readonly char Glyph;
 		public PrintEvent(in int x, in int y, char glyph) {
 			X = x;
 			Y = y;

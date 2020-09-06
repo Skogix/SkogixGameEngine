@@ -35,6 +35,7 @@ namespace ECS {
 				var id = EntityFactory.BackupData.ComponentTypes.Count;
 				EntityFactory.BackupData.ComponentTypes.Add(componentType);
 				EntityFactory.BackupData.ComponentIdByType[componentType] = id;
+				Console.CursorVisible = false;
 			}
 		}
 		public EntitySystem AddSystem(EntitySystem system) {

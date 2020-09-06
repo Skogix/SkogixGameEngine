@@ -6,30 +6,42 @@ using System.Linq;
 
 namespace ECS {
 	public class World {
+		public List<Entity> _allEntities = new List<Entity>();
+		public List<Component> _allComponents = new List<Component>();
+		public List<ICommand> _allCommands = new List<ICommand>();
+		public Dictionary<Entity, ICommand> _commandsByEntity = new Dictionary<Entity, ICommand>();
 		public static readonly Dictionary<Type, int> ComponentIdByType = new Dictionary<Type, int>();
-		public static readonly Dictionary<string, Type> ComponentTypeByName = new Dictionary<string, Type>();
 		public static readonly List<Type> ComponentTypes = new List<Type>();
-		public readonly List<EntitySystem> _entitySystems = new List<EntitySystem>();
+		public readonly List<ISystem> _allSystems = new List<ISystem>();
 		public readonly List<InitSystem> _initSystems = new List<InitSystem>();
 		public readonly List<IRunSystem> _runSystems = new List<IRunSystem>();
-		public Dictionary<string, Entity> _entityByHash = new Dictionary<string, Entity>();
-		public Dictionary<Type, Entity> _entityByType = new Dictionary<Type, Entity>();
-		
-		public EntityFactory EntityFactory;
-		public MessageManager MessageManager;
 		public DebugSystem DebugSystem;
+		public EntityFactory EntityFactory;
+		public EventSystem EventSystem;
 		public World() {
-			MessageManager = new MessageManager(this);
+			EventSystem = new EventSystem(this);
 			EntityFactory = new EntityFactory(this);
 			DebugSystem = new DebugSystem(this);
-			MessageManager.Subscribe<EngineEvent, EntityAddedEvent>(this, OnEntityAdded);
+			EventSystem.Subscribe<ComponentRemovedEvent>(this, OnComponentRemoved);
+			EventSystem.Subscribe<ComponentAddedEvent>(this, OnComponentAdded);
+			EventSystem.Subscribe<EntityAddedEvent>(this, OnEntityAdded);
 			_init();
-			
 		}
-		private void OnEntityAdded(EngineEvent engineEvent, EntityAddedEvent e) {
-			_entityByHash.Add(e.Entity.GetHash, e.Entity);
-			if(_entityByType.ContainsKey(e.GetType()) == false) _entityByType.Add(e.GetType(), e.Entity);
+		private void OnComponentAdded(ComponentAddedEvent e) {
+			_allComponents.Add(e.Component);
+			if (e.Component is ICommand command) {
+				_allCommands.Add(command);
+				_commandsByEntity.Add(e.Entity, command);
+			}
 		}
+		private void OnComponentRemoved(ComponentRemovedEvent e) {
+			_allComponents.Remove(e.Component);
+			if (e.Component is ICommand command) {
+				_allCommands.Remove(command);
+				_commandsByEntity.Remove(e.Entity);
+			}
+		}
+		private void OnEntityAdded(EntityAddedEvent e) => _allEntities.Add(e.Entity);
 		private void _init() {
 			var domain = AppDomain.CurrentDomain; // nuvarande domain, dvs inte SkogixEngine utan där den callas
 			foreach (var componentType in from assembly in
@@ -41,28 +53,30 @@ namespace ECS {
 			                              select type) {
 				var id = ComponentTypes.Count;
 				ComponentTypes.Add(componentType);
-				ComponentTypeByName[componentType.Name] = componentType;
 				ComponentIdByType[componentType] = id;
 			}
 		}
-		internal static int GetComponentId(Type type) { return ComponentIdByType[type]; }
 		/// <summary>
 		///     Måste callas innan något annat
 		///     Läser in alla components i domain
 		/// </summary>
-		public void AddSystem(EntitySystem entitySystem) {
-			_entitySystems.Add(entitySystem);
+		public void AddSystem(ISystem system) {
+			_allSystems.Add(system);
 			//if(system is EntitySystem entitySystem) _entitySystems.Add(entitySystem);
-			if (entitySystem is IRunSystem runSystem) _runSystems.Add(runSystem);
-			if (entitySystem is InitSystem initSystem) _initSystems.Add(initSystem);
+			if (system is IRunSystem runSystem) _runSystems.Add(runSystem);
+			if (system is InitSystem initSystem) _initSystems.Add(initSystem);
 		}
 		public void Run() {
+			for (var i = 0; i < _allCommands.Count; i++) {
+				var command = _allCommands[i];
+				command.RunCommand();
+				var entity = _commandsByEntity.First(c => c.Value == command).Key;
+				entity.RemoveComponent(command.GetType());
+			}
 			_runSystems.ForEach(s => s.Run());
 		}
 		public void InitSystems() { _initSystems.ForEach(s => s.Init()); }
-
-		public virtual void Destroy() {
-		}
+		public virtual void Destroy() { }
 	}
 	public class EngineEvent { }
 }

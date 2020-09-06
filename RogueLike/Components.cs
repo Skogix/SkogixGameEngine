@@ -3,16 +3,27 @@ using ECS;
 #endregion
 
 namespace RogueLikeUI {
-	public class HealthComponent : Component {
-		public HealthComponent(int health, int maxHealth) {
-			Health = health;
-			MaxHealth = maxHealth;
+	public class Health : Component {
+		public Health(int health, int maxHealth) {
+			Hp = health;
+			MaxHp = maxHealth;
 		}
-		public int Health { get; set; }
-		public int MaxHealth { get; set; }
+		public int Hp { get; set; }
+		public int MaxHp { get; set; }
 	}
-	public class AttackComponent : Component {
-		public AttackComponent(int attackDamage) { AttackDamage = attackDamage; }
-		public int AttackDamage { get; set; }
+	public class Actor : Component {
+		public char Key { get; set; }
 	}
+	public class Transform : Component {
+		public int X { get; set; }
+		public int Y { get; set; }
+		public Transform(int x, int y) {
+			X = x;
+			Y = y;
+		}
+	}
+	
+	
+	
+	
 }

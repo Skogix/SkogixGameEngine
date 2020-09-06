@@ -1,5 +1,3 @@
 namespace ECS {
-	public class EventFactory<TT, TE> {
-		
-	}
+	public class EventFactory<T> { }
 }

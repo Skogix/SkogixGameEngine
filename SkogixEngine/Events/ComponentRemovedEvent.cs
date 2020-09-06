@@ -1,15 +1,15 @@
 #region
-using System;
 #endregion
 
 namespace ECS {
-	internal class ComponentRemovedEvent : IEvent {
-		internal Type ComponentType;
-		internal Entity Entity;
-		internal ComponentRemovedEvent(Entity entity, Type componentType) {
+	public class ComponentRemovedEvent : IEvent {
+		public Component Component;
+		public Entity Entity;
+		public ComponentRemovedEvent(Entity entity, Component component) {
 			Entity = entity;
-			ComponentType = componentType;
+			Component = component;
+			Message = $"Removed {component} from {entity.GetHash}";
 		}
-		public string Description { get; }
+		public string Message { get; set; }
 	}
 }

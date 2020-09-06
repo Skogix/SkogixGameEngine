@@ -6,17 +6,11 @@ using NUnit.Framework;
 namespace EngineTests {
 	public class Tests {
 		[SetUp]
-		public void Setup() {
-			
-		}
+		public void Setup() { }
 		[TearDown]
-		public void TearDown() {
-			
-		}
-
+		public void TearDown() { }
 		[Test]
 		public void NewWorld() {
-			var w = new World();
 		}
 	}
 }

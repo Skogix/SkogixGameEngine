@@ -11,12 +11,13 @@ namespace ECS {
 		private static int Next() { return _idCount++; }
 		private Entity NewEntity() {
 			var e = new Entity(W, Next());
-			W.MessageManager.Publish<EntityAddedEvent>(new EntityAddedEvent(e));
+			W.EventSystem.Publish(new EntityAddedEvent(e));
 			return e;
 		}
 		private List<Component> CloneComponents(Entity sourceEntity) {
 			return sourceEntity.ComponentsByType.Values.Select(c => c.Clone() as Component).ToList();
 		}
+		
 		public Entity Get() { return NewEntity(); }
 		public Entity Get(Component component) {
 			var e = NewEntity();

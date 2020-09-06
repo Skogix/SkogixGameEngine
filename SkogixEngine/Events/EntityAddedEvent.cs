@@ -1,10 +1,10 @@
 namespace ECS {
 	public class EntityAddedEvent : IEvent {
+		public readonly Entity Entity;
 		public EntityAddedEvent(Entity entity) {
 			Entity = entity;
-			Description = $"Created {entity.GetHash}";
+			Message = $"Created {entity.GetHash}";
 		}
-		public readonly Entity Entity;
-		public string Description { get; }
+		public string Message { get; set; }
 	}
 }

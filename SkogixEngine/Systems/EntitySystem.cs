@@ -20,10 +20,10 @@ namespace ECS.Systems {
 			if (_filters.Contains(componentType) == false) _filters.Add(componentType);
 		}
 		private void OnComponentRemoved(ComponentRemovedEvent e) {
-			if (World.EntityManager.EntityHasAllComponents(e.Entity, _filters) == false) Entities.Remove(e.Entity);
+			if (World.EntityManager.Has(e.Entity, _filters) == false) Entities.Remove(e.Entity);
 		}
 		private void OnComponentAdded(ComponentAddedEvent e) {
-			if (World.EntityManager.EntityHasAllComponents(e.Entity, _filters) && Entities.Contains(e.Entity) == false)
+			if (World.EntityManager.Has(e.Entity, _filters) && Entities.Contains(e.Entity) == false)
 				Entities.Add(e.Entity);
 		}
 	}

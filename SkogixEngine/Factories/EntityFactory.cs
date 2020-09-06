@@ -1,4 +1,5 @@
 #region
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using ECS.Interfaces;
@@ -16,7 +17,7 @@ namespace ECS.Factories {
 			return e;
 		}
 		private List<Component> CloneComponents(Entity sourceEntity) {
-			return sourceEntity.EntityManager.ComponentsByType.Values.Select(c => c.Clone() as Component).ToList();
+			return BackupData.ComponentsByType.Values.Select(c => c.Clone() as Component).ToList();
 		}
 		public Entity Get() { return NewEntity(); }
 		public Entity Get(Component component) {
@@ -35,14 +36,19 @@ namespace ECS.Factories {
 			return e;
 		}
 		public Entity Get(ITemplate template) {
-			var e = NewEntity();
-			template.Components.ToList().ForEach(e.Add);
-			return e;
+			var output = NewEntity();
+			foreach (var component in template.Components) output.Add(component);
+			return output;
 		}
 		public Entity Get(params Component[] components) {
 			var e = NewEntity();
 			components.ToList().ForEach(e.Add);
 			return e;
+		}
+		public class BackupData {
+			internal static readonly Dictionary<Type, int> ComponentIdByType = new Dictionary<Type, int>();
+			internal static readonly List<Type> ComponentTypes = new List<Type>();
+			internal static readonly Dictionary<Type, Component> ComponentsByType = new Dictionary<Type, Component>();
 		}
 	}
 }

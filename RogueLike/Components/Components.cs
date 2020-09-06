@@ -22,8 +22,16 @@ namespace RogueLike {
 		public int X { get; set; }
 		public int Y { get; set; }
 	}
+	public class Destination : Component {
+		public Destination(int x, int y) {
+			X = x;
+			Y = y;
+		}
+		public int X { get; set; }
+		public int Y { get; set; }
+	}
 	public class Drawable : Component {
-		public Drawable(char glyph) => Glyph = glyph;
+		public Drawable(char glyph) { Glyph = glyph; }
 		public char Glyph { get; set; }
 	}
 }

@@ -13,20 +13,20 @@ namespace RogueLike {
 		}
 		public void Run() {
 			foreach (var entity in Entities) {
-				var key = Console.ReadKey(true).KeyChar;
+				var key = Console.ReadKey().KeyChar;
 				var transform = entity.Get<Transform>();
-				var newMoveCommand = key switch {
-					',' => new MoveCommand(transform, 0, -1),
-					'a' => new MoveCommand(transform, -1, 0),
-					'e' => new MoveCommand(transform, +1, 0),
-					'o' => new MoveCommand(transform, 0, +1),
-					_ => new MoveCommand(transform, 0, 0),
+				var destinationComponent = key switch {
+					',' => new Destination(transform.X + 0, transform.Y - 1),
+					'a' => new Destination(transform.X - 1, transform.Y + 0),
+					'e' => new Destination(transform.X + 1, transform.Y + 0),
+					'o' => new Destination(transform.X + 0, transform.Y + 1),
+					_ => new Destination(transform.X + 0, transform.Y + 0),
 				};
-				entity.Add(newMoveCommand);
+				entity.Add(destinationComponent);
 			}
 		}
 	}
-	public class MoveCommand : Component, ICommand {
+	public class MoveCommand : ICommand {
 		public MoveCommand(Transform transform, int x, int y) {
 			Transform = transform;
 			X = x;
@@ -39,5 +39,6 @@ namespace RogueLike {
 			Transform.X += X;
 			Transform.Y += Y;
 		}
+		public bool IsExecuted { get; set; }
 	}
 }

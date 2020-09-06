@@ -18,7 +18,7 @@ namespace RogueLikeUI {
 			var command = new AttackCommand(commandContainer, attacker, defender);
 			w.MessageManager.CommandManager.AddCommandContainer(commandContainer, command);
 			// w.MessageManager.CommandManager.AddCommand(new AttackCommand(attacker, defender));
-			w.MessageManager.CommandManager.RunCommands();
+			w.MessageManager.CommandManager.ExecuteCommands();
 			w.Run();
 			//aaaa
 		}

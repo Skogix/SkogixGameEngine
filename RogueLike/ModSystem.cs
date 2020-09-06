@@ -13,7 +13,7 @@ namespace RogueLikeUI {
 		private void OnAttackCommand(CommandContainer cc, AttackCommand c) {
 			var command = new AttackModifier(c.Attacker, c.Defender, c.AttackDamage);
 			CommandContainer container = cc;
-			World.MessageManager.Publish(container, command);
+			World.MessageManager.CommandManager.AddCommandContainer(container, command);
 		}
 	}
 	internal class AttackModifier : ICommand {

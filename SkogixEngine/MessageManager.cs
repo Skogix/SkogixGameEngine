@@ -28,27 +28,30 @@ namespace ECS {
 		}
 		
 		private readonly List<Handler> Handlers = new List<Handler>();
-		public void Subscribe<TC, TD>(object sub, Action<TC, TD> handler) {
-			Handlers.Add(GetHandler<TC, TD>(sub, handler));
+		public void Subscribe<T1, T2>(object sub, Action<T1, T2> handler) {
+			Handlers.Add(GetHandler<T1, T2>(sub, handler));
 		}
-		public void Publish<TC, TD>(object sender, TD data) {
+		public void Publish<T1, T2>(object sender, T2 data, T1 filter) {
 			if (data is IMessage iMessage) World.DebugSystem.Debug(iMessage.Description);
-			foreach (var handler in Handlers.Where(h => h.Type == typeof(TD)))
-				if (handler.Action is Action<TD> sendAction) {
-					sendAction(data);
+			foreach (var handler in Handlers.Where(h => h.Type == typeof(T2)))
+				if (handler.Action is Action<T1, T2> sendAction) {
+					sendAction(filter, data);
 				}
 		}
-		public void Publish<TC, TD>(TD data = default) { Publish<TC, TD>(null, data); }
+		public void Publish<T1, T2>(T2 data, T1 filter) { Publish<T1, T2>(null, data, filter); }
+		public void Publish<T2>(T2 data) => Publish(null, data, new AllFilter());
 		
-		private static Handler GetHandler<TC, TD>(object sub, Delegate handler) {
-			return new Handler {Action = handler, Type = typeof(TD), Sender = new WeakReference(sub)};
+		private static Handler GetHandler<T1, T2>(object sub, Delegate handler) {
+			return new Handler {Action = handler, Type = typeof(T2), Filter = typeof(T1), Sender = new WeakReference(sub)};
 		}
 		private class Handler {
+			public Type Filter { get; set; }
 			public Delegate Action { get; set; }
 			public Type Type { get; set; }
 			public object Sender { get; set; }
 		}
 	}
+	public class AllFilter { }
 	public class CommandManager{
 		private static int IdCount { get; set; }
 		private List<CommandContainer> CommandContainers = new List<CommandContainer>();
@@ -58,9 +61,14 @@ namespace ECS {
 		public CommandManager(MessageManager messageManager){
 			MessageManager = messageManager;
 		}
-		public void AddCommandContainer<TC, TD>(CommandContainer command) where TD: class, ICommand{
-			MessageManager.Publish<TC, TD>(command as TD);
-			CommandContainers.Add(command);
+		public void AddCommandContainer<T1, T2>(T1 container, T2 command) 
+			where T1: CommandContainer
+			where T2: class, ICommand
+			
+		{
+			container.AddItem(command);
+			MessageManager.Publish<T1, T2>(command, container);
+			CommandContainers.Add(container);
 		}
 		public void RunCommands() {
 			foreach (CommandContainer commandContainer in CommandContainers) {

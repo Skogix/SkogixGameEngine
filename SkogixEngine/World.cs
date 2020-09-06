@@ -22,11 +22,11 @@ namespace ECS {
 			MessageManager = new MessageManager(this);
 			EntityFactory = new EntityFactory(this);
 			DebugSystem = new DebugSystem(this);
-			MessageManager.Subscribe<EntityAddedEvent>(this, OnEntityAdded);
+			MessageManager.Subscribe<EngineEvent, EntityAddedEvent>(this, OnEntityAdded);
 			_init();
 			
 		}
-		private void OnEntityAdded(EntityAddedEvent e) {
+		private void OnEntityAdded(EngineEvent engineEvent, EntityAddedEvent e) {
 			_entityByHash.Add(e.Entity.GetHash, e.Entity);
 			if(_entityByType.ContainsKey(e.GetType()) == false) _entityByType.Add(e.GetType(), e.Entity);
 		}
@@ -64,4 +64,5 @@ namespace ECS {
 		public virtual void Destroy() {
 		}
 	}
+	public class EngineEvent { }
 }

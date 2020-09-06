@@ -11,7 +11,7 @@ namespace ECS {
 		private static int Next() { return _idCount++; }
 		private Entity NewEntity() {
 			var e = new Entity(W, Next());
-			W.MessageManager.Publish(new EntityAddedEvent(e));
+			W.MessageManager.Publish<EngineEvent, EntityAddedEvent>(new EntityAddedEvent(e));
 			return e;
 		}
 		private List<Component> CloneComponents(Entity sourceEntity) {

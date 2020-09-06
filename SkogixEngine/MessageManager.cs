@@ -28,20 +28,20 @@ namespace ECS {
 		}
 		
 		private readonly List<Handler> Handlers = new List<Handler>();
-		public void Subscribe<T>(object sub, Action<T> handler) {
-			Handlers.Add(GetHandler<T>(sub, handler));
+		public void Subscribe<TC, TD>(object sub, Action<TC, TD> handler) {
+			Handlers.Add(GetHandler<TC, TD>(sub, handler));
 		}
-		public void Publish<T>(object sender, T data) {
+		public void Publish<TC, TD>(object sender, TD data) {
 			if (data is IMessage iMessage) World.DebugSystem.Debug(iMessage.Description);
-			foreach (var handler in Handlers.Where(h => h.Type == typeof(T)))
-				if (handler.Action is Action<T> sendAction) {
+			foreach (var handler in Handlers.Where(h => h.Type == typeof(TD)))
+				if (handler.Action is Action<TD> sendAction) {
 					sendAction(data);
 				}
 		}
-		public void Publish<T>(T data = default) { Publish(null, data); }
+		public void Publish<TC, TD>(TD data = default) { Publish<TC, TD>(null, data); }
 		
-		private static Handler GetHandler<T>(object sub, Delegate handler) {
-			return new Handler {Action = handler, Type = typeof(T), Sender = new WeakReference(sub)};
+		private static Handler GetHandler<TC, TD>(object sub, Delegate handler) {
+			return new Handler {Action = handler, Type = typeof(TD), Sender = new WeakReference(sub)};
 		}
 		private class Handler {
 			public Delegate Action { get; set; }
@@ -58,8 +58,8 @@ namespace ECS {
 		public CommandManager(MessageManager messageManager){
 			MessageManager = messageManager;
 		}
-		public void AddCommandContainer<T>(CommandContainer command) where T: class, ICommand{
-			MessageManager.Publish<T>(command as T);
+		public void AddCommandContainer<TC, TD>(CommandContainer command) where TD: class, ICommand{
+			MessageManager.Publish<TC, TD>(command as TD);
 			CommandContainers.Add(command);
 		}
 		public void RunCommands() {

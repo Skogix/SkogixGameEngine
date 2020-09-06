@@ -12,8 +12,8 @@ namespace ECS {
 			Entities = new List<Entity>();
 			_filters = new List<Type>();
 			World = world;
-			World.MessageManager.Subscribe<ComponentAddedEvent>(this, OnComponentAdded);
-			World.MessageManager.Subscribe<ComponentRemovedEvent>(this, OnComponentRemoved);
+			World.MessageManager.Subscribe<EngineEvent, ComponentAddedEvent>(this, OnComponentAdded);
+			World.MessageManager.Subscribe<EngineEvent, ComponentRemovedEvent>(this, OnComponentRemoved);
 		}
 		protected EntitySystem(World world, params Type[] componentTypes) : this(world) {
 			componentTypes.ToList().ForEach(AddFilter);
@@ -23,13 +23,13 @@ namespace ECS {
 		protected void AddFilter(Type componentType) {
 			if (_filters.Contains(componentType) == false) _filters.Add(componentType);
 		}
-		private void OnComponentRemoved(ComponentRemovedEvent e) {
+		private void OnComponentRemoved(EngineEvent engineEvent, ComponentRemovedEvent e) {
 			if (EntityHasAllComponents(e.Entity, _filters) == false) Entities.Remove(e.Entity);
 		}
 		private bool EntityHasAllComponents(Entity entity, List<Type> componentTypes) {
 			return entity.ContainsComponent(componentTypes);
 		}
-		private void OnComponentAdded(ComponentAddedEvent e) {
+		private void OnComponentAdded(EngineEvent engineEvent, ComponentAddedEvent e) {
 			if (EntityHasAllComponents(e.Entity, _filters) && Entities.Contains(e.Entity) == false)
 				Entities.Add(e.Entity);
 		}

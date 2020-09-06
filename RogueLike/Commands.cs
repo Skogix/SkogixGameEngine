@@ -22,7 +22,7 @@ namespace RogueLikeUI {
 		public Entity Attacker { get; set; }
 		public void Execute() {
 			Defender.GetComponent<HealthComponent>().Health -= AttackDamage;
-			Attacker.W.MessageManager.Publish(Attacker, new DamageDoneEvent(Attacker, Defender, AttackDamage));
+			Attacker.W.MessageManager.Publish<IEvent, DamageDoneEvent>(new DamageDoneEvent(Attacker, Defender, AttackDamage));
 		}
 		public string Description { get; }
 	}

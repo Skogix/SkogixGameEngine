@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using ECS;
 using ECS.Interfaces;
+using RogueLike.Components;
 #endregion
 
 namespace RogueLike {

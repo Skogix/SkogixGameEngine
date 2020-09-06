@@ -1,8 +1,9 @@
 using ECS;
 using ECS.Interfaces;
 using ECS.Systems;
+using RogueLike.Components;
 
-namespace RogueLike {
+namespace RogueLike.Systems {
 	public class MoveSystem : EntitySystem, IRunSystem, InitSystem {
 		public World World { get; }
 		public MoveSystem(World world) : base(world) { World = world; }

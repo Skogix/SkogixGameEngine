@@ -1,3 +1,5 @@
+using System;
+
 namespace ECS.Systems {
 	public class DebugSystem {
 		public DebugSystem(World world) { World = world; }

@@ -3,9 +3,10 @@ using System;
 using ECS;
 using ECS.Interfaces;
 using ECS.Systems;
+using RogueLike.Components;
 #endregion
 
-namespace RogueLike {
+namespace RogueLike.Systems {
 	public class InputSystem : EntitySystem, IRunSystem {
 		public InputSystem(World world) : base(world) {
 			AddFilter(typeof(Actor));
@@ -25,20 +26,5 @@ namespace RogueLike {
 				entity.Add(destinationComponent);
 			}
 		}
-	}
-	public class MoveCommand : ICommand {
-		public MoveCommand(Transform transform, int x, int y) {
-			Transform = transform;
-			X = x;
-			Y = y;
-		}
-		public Transform Transform { get; set; }
-		public int X { get; set; }
-		public int Y { get; set; }
-		public void Execute() {
-			Transform.X += X;
-			Transform.Y += Y;
-		}
-		public bool IsExecuted { get; set; }
 	}
 }

@@ -3,10 +3,12 @@ using System;
 using ECS;
 using ECS.Interfaces;
 using ECS.Systems;
+using RogueLike.Components;
+using RogueLike.Events;
 #endregion
 
-namespace RogueLike {
-	public class MapSystem : EntitySystem, IRunSystem, InitSystem {
+namespace RogueLike.Systems {
+	public class MapSystem : EntitySystem, InitSystem {
 		public const int Height = 10;
 		public const int Width = 50;
 		public MapSystem(World world) : base(world) { World = world; }
@@ -17,11 +19,14 @@ namespace RogueLike {
 			InitMap();
 			Console.Clear();
 		}
-		public void Run() { }
 		private void InitMap() {
 			for (var x = 0; x < Width; x++)
-			for (var y = 0; y < Height; y++)
-				Tiles[x, y] = World.CreateEntity(new Drawable('.'), new Transform(x, y));
+				for (var y = 0; y < Height; y++) {
+					Tiles[x, y] = World.CreateEntity(new Drawable('.'), new Transform(x, y));
+					this.Pub(new PrintEvent(x,y,'.'));
+				
+			}
+			
 		}
 	}
 }

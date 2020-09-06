@@ -2,12 +2,47 @@
 #region
 #endregion
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using ECS.Interfaces;
 using ECS.Systems;
 
 namespace ECS {
 	#endregion
-	public static class Extensions {
+public interface IProductStockReportBuilder
+{
+    IProductStockReportBuilder BuildHeader();
+    IProductStockReportBuilder BuildBody();
+    IProductStockReportBuilder BuildFooter();
+    ProductStockReport GetReport();
+}
+public class ProductStockReport { }
+
+
+public IProductStockReportBuilder BuildHeader()
+{
+    _productStockReport.HeaderPart = $"STOCK REPORT FOR ALL THE PRODUCTS ON DATE: {DateTime.Now}\n";
+    return this;
+}
+
+public IProductStockReportBuilder BuildBody()
+{
+    _productStockReport.BodyPart = string.Join(Environment.NewLine, _products.Select(p => $"Product name: {p.Name}, product price: {p.Price}"));
+    return this;
+}
+
+public IProductStockReportBuilder BuildFooter()
+{
+    _productStockReport.FooterPart = "\nReport provided by the IT_PRODUCTS company.";
+    return this;
+}
+
+
+
+
+
+
+public static class Extensions {
 		public static void Add(this Entity e, Component c) { e.EntityManager.AddComponent(e, c); }
 		public static T Get<T>(this Entity e) where T : Component { return e.EntityManager.Get<T>(e); }
 		public static void RemoveComponent<T>(this Entity e) where T : Component {
@@ -15,10 +50,17 @@ namespace ECS {
 		}
 		public static void RemoveComponent(this Entity e, Component c) =>
 			e.EntityManager.RemoveComponent(e, c);
-		public static Entity CreateEntity(this World w) => w.EntityFactory.Get();
+		//public static Entity CreateEntity(this World w) => w.EntityFactory.Get();
 		public static Entity CreateEntity(this World w, ITemplate t) => w.EntityFactory.Get(t);
 		public static Entity CreateEntity(this World w, Component c) => w.EntityFactory.Get(c);
 		public static Entity CreateEntity(this World w, params Component[] c) => w.EntityFactory.Get(c);
+
+		
+		public static Entity CreateEntity(this World w) {
+			var entity = w.EntityFactory.Get();
+			void Add(Component c) { entity.EntityManager.AddComponent(entity, c); }
+			return entity;
+		}
 		/*
 		internal static bool ContainsComponent(this EntityManager m, Type c) => EntityFactory.BackupData.ComponentsByType.ContainsKey(c);
 		internal static bool ContainsComponents(this EntityManager m, IEnumerable<Type> c) => c.All(EntityFactory.BackupData.ComponentsByType.ContainsKey);

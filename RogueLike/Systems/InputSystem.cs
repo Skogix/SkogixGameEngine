@@ -3,6 +3,7 @@ using System;
 using ECS;
 using ECS.Interfaces;
 using ECS.Systems;
+using RogueLike.Commands;
 using RogueLike.Components;
 #endregion
 
@@ -15,16 +16,16 @@ namespace RogueLike.Systems {
 		public void Run() {
 			foreach (var entity in Entities) {
 				var key = Console.ReadKey().KeyChar;
-				var transform = entity.Get<Transform>();
-				var destinationComponent = key switch {
-					',' => new Destination(transform.X + 0, transform.Y - 1),
-					'a' => new Destination(transform.X - 1, transform.Y + 0),
-					'e' => new Destination(transform.X + 1, transform.Y + 0),
-					'o' => new Destination(transform.X + 0, transform.Y + 1),
-					_ => new Destination(transform.X + 0, transform.Y + 0),
+				var t = entity.Get<Transform>();
+				var command = key switch {
+					',' => new MoveCommand(t, new Destination(0, -1)),
+					'o' => new MoveCommand(t, new Destination(0, +1)),
+					'a' => new MoveCommand(t, new Destination(-1, 0)),
+					'e' => new MoveCommand(t, new Destination(+1, 0)),
+					_ => new MoveCommand(t, new Destination(0, 0))
 				};
-				entity.Add(destinationComponent);
 			}
+			
 		}
 	}
 }

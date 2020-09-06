@@ -14,6 +14,9 @@ namespace RogueLike.Commands {
 		public void Execute() {
 			Console.WriteLine("INPUTCOMMAND KÖRS!");
 		}
+		public void UndoAction() {
+			Console.WriteLine("UNDO KÖÖÖRS!");
+		}
 		public bool IsExecuted { get; set; }
 		public Actions Action { get; set; }
 		public Destination Destination { get; set; }

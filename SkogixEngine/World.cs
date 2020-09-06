@@ -37,11 +37,12 @@ namespace ECS {
 				EntityFactory.BackupData.ComponentIdByType[componentType] = id;
 			}
 		}
-		public void AddSystem(EntitySystem system) {
+		public EntitySystem AddSystem(EntitySystem system) {
 			_allSystems.Add(system);
 			//if(system is EntitySystem entitySystem) _entitySystems.Add(entitySystem);
 			if (system is IRunSystem runSystem) _runSystems.Add(runSystem);
 			if (system is InitSystem initSystem) _initSystems.Add(initSystem);
+			return system;
 		}
 		public void Run() {
 			_runSystems.ForEach(s => s.Run());

@@ -30,6 +30,9 @@ namespace RogueLike.Systems {
 			public void Execute() {
 				Entity.RemoveComponent(Component);
 			}
+			public void UndoAction() {
+				Entity.Add(Component);
+			}
 			public bool IsExecuted { get; set; }
 		}
 	}

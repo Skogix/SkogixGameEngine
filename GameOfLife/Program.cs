@@ -1,35 +1,30 @@
-﻿using System;
+﻿#region
+using System;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
+#endregion
 
 namespace GameOfLife {
-	class Program {
-		const int Rows = 25;
-		const int Columns = 50;
-		static bool runSimulation = true;
-
-		static void Main(string[] args) {
+	internal class Program {
+		private const int Rows = 25;
+		private const int Columns = 50;
+		private static bool runSimulation = true;
+		private static void Main(string[] args) {
 			var grid = new Status[Rows, Columns];
-			for (int row = 0; row < Rows; row++) {
-				for (int column = 0; column < Columns; column++) {
-					grid[row, column] = (Status) RandomNumberGenerator.GetInt32(0, 2);
-				}
-			}
-
+			for (var row = 0; row < Rows; row++)
+			for (var column = 0; column < Columns; column++)
+				grid[row, column] = (Status) RandomNumberGenerator.GetInt32(0, 2);
 			Console.CancelKeyPress += (sender, args) => {
 				runSimulation = false;
 				Console.WriteLine("\n Ending simulation.");
 			};
-
 			Console.Clear();
-
 			while (runSimulation) {
 				Print(grid);
 				grid = NextGeneration(grid);
 			}
 		}
-
 		private static Status[,] NextGeneration(Status[,] currentGrid) {
 			var nextGeneration = new Status[Rows, Columns];
 
@@ -38,12 +33,9 @@ namespace GameOfLife {
 			for (var column = 1; column < Columns - 1; column++) {
 				// find your alive neighbors
 				var aliveNeighbors = 0;
-				for (var i = -1; i <= 1; i++) {
-					for (var j = -1; j <= 1; j++) {
-						aliveNeighbors += currentGrid[row + i, column + j] == Status.Alive ? 1 : 0;
-					}
-				}
-
+				for (var i = -1; i <= 1; i++)
+				for (var j = -1; j <= 1; j++)
+					aliveNeighbors += currentGrid[row + i, column + j] == Status.Alive ? 1 : 0;
 				var currentCell = currentGrid[row, column];
 
 				// The cell needs to be subtracted 
@@ -54,28 +46,23 @@ namespace GameOfLife {
 				// Implementing the Rules of Life 
 
 				// Cell is lonely and dies 
-				if (currentCell == Status.Alive && aliveNeighbors < 2) {
+				if (currentCell == Status.Alive && aliveNeighbors < 2)
 					nextGeneration[row, column] = Status.Dead;
-				}
 
 				// Cell dies due to over population 
-				else if (currentCell == Status.Alive && aliveNeighbors > 3) {
+				else if (currentCell == Status.Alive && aliveNeighbors > 3)
 					nextGeneration[row, column] = Status.Dead;
-				}
 
 				// A new cell is born 
-				else if (currentCell == Status.Dead && aliveNeighbors == 3) {
+				else if (currentCell == Status.Dead && aliveNeighbors == 3)
 					nextGeneration[row, column] = Status.Alive;
-				}
 				// stays the same
-				else {
+				else
 					nextGeneration[row, column] = currentCell;
-				}
 			}
 
 			return nextGeneration;
 		}
-
 		private static void Print(Status[,] future, int timeout = 500) {
 			var stringBuilder = new StringBuilder();
 			for (var row = 0; row < Rows; row++) {
@@ -94,11 +81,8 @@ namespace GameOfLife {
 			Thread.Sleep(timeout);
 		}
 	}
-
 	public enum Status {
 		Dead,
 		Alive,
 	}
-
-
 }

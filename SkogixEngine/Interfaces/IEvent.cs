@@ -1,3 +1,3 @@
-namespace ECS {
+namespace ECS.Interfaces {
 	public interface IEvent : IMessage { }
 }

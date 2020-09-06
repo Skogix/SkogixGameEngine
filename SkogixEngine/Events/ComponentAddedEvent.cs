@@ -1,4 +1,5 @@
 #region
+using ECS.Interfaces;
 #endregion
 
 namespace ECS {

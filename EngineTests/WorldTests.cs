@@ -1,5 +1,4 @@
 #region
-using ECS;
 using NUnit.Framework;
 #endregion
 
@@ -10,7 +9,6 @@ namespace EngineTests {
 		[TearDown]
 		public void TearDown() { }
 		[Test]
-		public void NewWorld() {
-		}
+		public void NewWorld() { }
 	}
 }

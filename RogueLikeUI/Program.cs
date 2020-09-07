@@ -1,5 +1,4 @@
 ﻿#region
-using System;
 using RogueLike.Systems;
 #endregion
 
@@ -7,18 +6,12 @@ namespace RogueLikeUI {
 	internal class Program {
 		private static void Main(string[] args) {
 			var tileMap = new TileMap();
-			var mapHandler = new MapHandler(tileMap, 1,3, 22);
-			mapHandler.BlankMap(tileMap);
+			var mapHandler = new MapHandler(2, 3, 5);
+			tileMap = mapHandler.FillMapWithRandomGarbage(tileMap);
 			tileMap = mapHandler.PrintMap(tileMap);
-			//mapHandler.FillMapWithRandomGarbage(tileMap);
 			while(true) {
-				//Console.ReadKey(true);
-				for(var i = 0; i < 10; i++) {
-					tileMap = mapHandler.PrintMap(tileMap);
-					tileMap = mapHandler.DoSimulationStep(tileMap);
-					if(i > 7) mapHandler.PlaceTreasure(tileMap);
-				}
-				//mapHandler.MakeCaverns(tileMap);
+				tileMap = mapHandler.PrintMap(tileMap);
+				tileMap = mapHandler.Simulate(tileMap);
 			}
 
 			//mapHandler.FillMap2();

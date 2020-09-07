@@ -12,8 +12,7 @@ namespace ECS {
 	public static class Extensions {
 		public static void Add(this Entity e, Component c) => e.EntityManager.AddComponent(e, c);
 		public static T Get<T>(this Entity e) where T: Component => e.EntityManager.Get<T>(e);
-		public static void RemoveComponent<T>(this Entity e) where T: Component
-			=> e.EntityManager.RemoveComponent(e, e.Get<T>());
+		public static void RemoveComponent<T>(this Entity e) where T: Component => e.EntityManager.RemoveComponent(e, e.Get<T>());
 		public static void RemoveComponent(this Entity e, Component c) => e.EntityManager.RemoveComponent(e, c);
 		//public static Entity CreateEntity(this World w) => w.EntityFactory.Get();
 		public static Entity CreateEntity(this World w, ITemplate t) => w.EntityFactory.Get(t);
@@ -43,10 +42,8 @@ namespace ECS {
 		public static void AddComponents(this Entity e, IEnumerable<Component> components) { foreach (var component in components) e.Add(component); }
 		*/
 		public static void Push<T>(this EntitySystem es, T data) where T: ICommand => es.World.EventManager.Push(data);
-		public static void Pull<T>(this EntitySystem es, Type type) where T: class, ICommand
-			=> es.World.EventManager.Pull<T>(type);
+		public static void Pull<T>(this EntitySystem es, Type type) where T: class, ICommand => es.World.EventManager.Pull<T>(type);
 		public static void Pub<T>(this EntitySystem es, T data) => es.World.EventManager.Publish(data);
-		public static void Sub<T>(this EntitySystem es, object sub, Action<T> data)
-			=> es.World.EventManager.Subscribe(sub, data);
+		public static void Sub<T>(this EntitySystem es, object sub, Action<T> data) => es.World.EventManager.Subscribe(sub, data);
 	}
 }

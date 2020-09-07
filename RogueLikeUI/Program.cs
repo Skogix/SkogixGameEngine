@@ -7,15 +7,18 @@ namespace RogueLikeUI {
 	internal class Program {
 		private static void Main(string[] args) {
 			var tileMap = new TileMap();
-			var mapHandler = new MapHandler(tileMap, 3, 4, 50);
+			var mapHandler = new MapHandler(tileMap, 1,3, 22);
 			mapHandler.BlankMap(tileMap);
-			mapHandler.FillMapWithRandomGarbage(tileMap);
+			tileMap = mapHandler.PrintMap(tileMap);
+			//mapHandler.FillMapWithRandomGarbage(tileMap);
 			while(true) {
-				var key = Console.ReadKey(true)
-				                 .KeyChar;
-				if(key != 's') continue;
-				tileMap = mapHandler.DoSimulationStep(tileMap);
-				mapHandler.PrintMap(tileMap);
+				//Console.ReadKey(true);
+				for(var i = 0; i < 10; i++) {
+					tileMap = mapHandler.PrintMap(tileMap);
+					tileMap = mapHandler.DoSimulationStep(tileMap);
+					if(i > 7) mapHandler.PlaceTreasure(tileMap);
+				}
+				//mapHandler.MakeCaverns(tileMap);
 			}
 
 			//mapHandler.FillMap2();

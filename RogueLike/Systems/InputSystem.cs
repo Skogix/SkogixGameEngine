@@ -15,8 +15,7 @@ namespace RogueLike.Systems {
 		}
 		public void Run() {
 			foreach(var entity in Entities) {
-				var key = Console.ReadKey(true)
-				                 .KeyChar;
+				var key = Console.ReadKey(true).KeyChar;
 				var t = entity.Get<Transform>();
 				var command = key switch {
 					',' => new MoveCommand(t, new Destination(0, -1)),

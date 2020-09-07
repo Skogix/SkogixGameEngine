@@ -9,8 +9,6 @@ using ECS.Systems;
 
 namespace ECS {
 	public class World {
-		public const int MapHeight = 20;
-		public const int MapWidth = 60;
 		private readonly List<ISystem> _allSystems = new List<ISystem>();
 		private readonly List<InitSystem> _initSystems = new List<InitSystem>();
 		private readonly List<IRunSystem> _runSystems = new List<IRunSystem>();
@@ -26,13 +24,10 @@ namespace ECS {
 			_init();
 		}
 		private void _init() {
-			var domain = AppDomain.CurrentDomain; // nuvarande domain, dvs inte SkogixEngine utan där den callas
-			foreach(var componentType in from assembly in
-				                             domain.GetAssemblies()         // hämtar loadade assemblies från domainen
-			                             from type in assembly.GetTypes() // hämtar typer från assembly
-			                             where
-				                             type.IsSubclassOf(typeof(Component
-				                                               )) // där typen är sealed och ärver av component
+			var domain = AppDomain.CurrentDomain;                                   // nuvarande domain, dvs inte SkogixEngine utan där den callas
+			foreach(var componentType in from assembly in domain.GetAssemblies()    // hämtar loadade assemblies från domainen
+			                             from type in assembly.GetTypes()           // hämtar typer från assembly
+			                             where type.IsSubclassOf(typeof(Component)) // där typen är sealed och ärver av component
 			                             select type) {
 				var id = EntityFactory.BackupData.ComponentTypes.Count;
 				EntityFactory.BackupData.ComponentTypes.Add(componentType);

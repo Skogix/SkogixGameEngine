@@ -16,9 +16,7 @@ namespace ECS.Factories {
 			W.EventManager.Publish(new EntityAddedEvent(e));
 			return e;
 		}
-		private List<Component> CloneComponents(Entity sourceEntity) => BackupData.ComponentsByType.Values
-		                                                                          .Select(c => c.Clone() as Component)
-		                                                                          .ToList();
+		private List<Component> CloneComponents(Entity sourceEntity) => BackupData.ComponentsByType.Values.Select(c => c.Clone() as Component).ToList();
 		public Entity Get() => NewEntity();
 		public Entity Get(Component component) {
 			var e = NewEntity();
@@ -32,8 +30,7 @@ namespace ECS.Factories {
 		}
 		public Entity Get(IEnumerable<Component> components) {
 			var e = NewEntity();
-			components.ToList()
-			          .ForEach(e.Add);
+			components.ToList().ForEach(e.Add);
 			return e;
 		}
 		public Entity Get(ITemplate template) {
@@ -43,15 +40,13 @@ namespace ECS.Factories {
 		}
 		public Entity Get(params Component[] components) {
 			var e = NewEntity();
-			components.ToList()
-			          .ForEach(e.Add);
+			components.ToList().ForEach(e.Add);
 			return e;
 		}
 		public class BackupData {
 			internal static readonly Dictionary<Type, int> ComponentIdByType = new Dictionary<Type, int>();
 			internal static readonly List<Type> ComponentTypes = new List<Type>();
-			internal static readonly Dictionary<Type, Component> ComponentsByType =
-				new Dictionary<Type, Component>();
+			internal static readonly Dictionary<Type, Component> ComponentsByType = new Dictionary<Type, Component>();
 		}
 	}
 }

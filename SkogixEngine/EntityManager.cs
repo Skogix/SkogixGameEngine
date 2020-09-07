@@ -27,12 +27,7 @@ namespace ECS {
 			return output;
 		}
 		*/
-		public List<Entity> GetAllEntitiesWithComponent<T>() where T: Component => Tuples
-		                                                                          .Where(
-			                                                                           t => t.Item2.GetType() == typeof(T))
-		                                                                          .ToList()
-		                                                                          .Select(t => t.Item1)
-		                                                                          .ToList();
+		public List<Entity> GetAllEntitiesWithComponent<T>() where T: Component => Tuples.Where(t => t.Item2.GetType() == typeof(T)).ToList().Select(t => t.Item1).ToList();
 		public void AddComponent(Entity e, Component c) => World.EventManager.Publish(new ComponentAddedEvent(e, c));
 		public void RemoveComponent(Entity e, Component c) => World.EventManager.Publish(new ComponentRemovedEvent(e, c));
 		public List<Component> GetAllComponentsOnEntity(Entity e) {
@@ -49,9 +44,7 @@ namespace ECS {
 					return false;
 			return true;
 		}
-		public Component[] GetAllComponentsOfType<T>() where T: Component => AllComponents
-		                                                                    .Where(c => c.GetType() == typeof(T))
-		                                                                    .ToArray();
+		public Component[] GetAllComponentsOfType<T>() where T: Component => AllComponents.Where(c => c.GetType() == typeof(T)).ToArray();
 		/*
 		internal void DestroyEntity(Entity entity) {
 			var removeKeys = new List<string>();

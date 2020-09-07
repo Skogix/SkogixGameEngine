@@ -19,14 +19,10 @@ namespace ECS.Systems {
 					sendAction(data);
 		}
 		internal void Publish<T>(T data) => Publish(null, data);
-		private static Handler GetHandler<T>(object sub, Delegate handler) => new Handler {
-			Action = handler, Type = typeof(T), Sender = new WeakReference(sub),
-		};
+		private static Handler GetHandler<T>(object sub, Delegate handler) => new Handler {Action = handler, Type = typeof(T), Sender = new WeakReference(sub)};
 		internal void Push<T>(T data) where T: ICommand => _bus.Add(_bus.Count, data);
 		internal IEnumerable<T> Pull<T>(Type type = default) where T: class, ICommand {
-			var output = type != null
-				? _bus.Where(o => o.GetType() == type)
-				: _bus.Where(o => o.GetType() == typeof(T));
+			var output = type != null? _bus.Where(o => o.GetType() == type): _bus.Where(o => o.GetType() == typeof(T));
 			foreach(var o in output) {
 				yield return o.Value as T;
 				_bus.Remove(o.Key);

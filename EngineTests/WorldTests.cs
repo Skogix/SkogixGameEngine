@@ -4,11 +4,8 @@ using NUnit.Framework;
 
 namespace EngineTests {
 	public class Tests {
-		[SetUp]
-		public void Setup() { }
-		[TearDown]
-		public void TearDown() { }
-		[Test]
-		public void NewWorld() { }
+		[SetUp]public void Setup() {}
+		[TearDown]public void TearDown() {}
+		[Test]public void NewWorld() {}
 	}
 }

@@ -3,7 +3,7 @@ using ECS.Interfaces;
 #endregion
 
 namespace ECS {
-	public class ComponentAddedEvent : IEvent {
+	public class ComponentAddedEvent: IEvent {
 		public Component Component;
 		public Entity Entity;
 		public ComponentAddedEvent(Entity entity, Component component) {
@@ -11,6 +11,6 @@ namespace ECS {
 			Component = component;
 			Message = $"Added {component} to {entity.GetHash}";
 		}
-		public string Message { get; set; }
+		public string Message { get;set; }
 	}
 }

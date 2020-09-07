@@ -1,5 +1,5 @@
 namespace ECS.Interfaces {
 	public interface IMessage {
-		public string Message { get; set; }
+		public string Message { get;set; }
 	}
 }

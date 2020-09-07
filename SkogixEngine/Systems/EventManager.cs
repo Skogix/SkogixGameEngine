@@ -9,25 +9,25 @@ namespace ECS.Systems {
 	public class EventManager {
 		private readonly Dictionary<int, ICommand> _bus = new Dictionary<int, ICommand>();
 		private readonly List<Handler> Handlers = new List<Handler>();
-		internal EventManager(World world) { World = world; }
+		internal EventManager(World world) => World = world;
 		internal World World { get; }
-		internal void Subscribe<T>(object sub, Action<T> handler) { Handlers.Add(GetHandler<T>(sub, handler)); }
+		internal void Subscribe<T>(object sub, Action<T> handler) => Handlers.Add(GetHandler<T>(sub, handler));
 		internal void Publish<T>(object sender, T data) {
-			if (data is IMessage iMessage) World.DebugSystem.Debug(iMessage.Message);
-			foreach (var handler in Handlers.Where(h => h.Type == typeof(T)))
-				if (handler.Action is Action<T> sendAction)
+			if(data is IMessage iMessage) World.DebugSystem.Debug(iMessage.Message);
+			foreach(var handler in Handlers.Where(h => h.Type == typeof(T)))
+				if(handler.Action is Action<T> sendAction)
 					sendAction(data);
 		}
-		internal void Publish<T>(T data) { Publish(null, data); }
-		private static Handler GetHandler<T>(object sub, Delegate handler) {
-			return new Handler {Action = handler, Type = typeof(T), Sender = new WeakReference(sub)};
-		}
-		internal void Push<T>(T data) where T : ICommand { _bus.Add(_bus.Count, data); }
-		internal IEnumerable<T> Pull<T>(Type type = default) where T : class, ICommand {
+		internal void Publish<T>(T data) => Publish(null, data);
+		private static Handler GetHandler<T>(object sub, Delegate handler) => new Handler {
+			Action = handler, Type = typeof(T), Sender = new WeakReference(sub),
+		};
+		internal void Push<T>(T data) where T: ICommand => _bus.Add(_bus.Count, data);
+		internal IEnumerable<T> Pull<T>(Type type = default) where T: class, ICommand {
 			var output = type != null
 				? _bus.Where(o => o.GetType() == type)
 				: _bus.Where(o => o.GetType() == typeof(T));
-			foreach (var o in output) {
+			foreach(var o in output) {
 				yield return o.Value as T;
 				_bus.Remove(o.Key);
 			}
@@ -38,15 +38,15 @@ namespace ECS.Systems {
 			return output;
 		}
 		public void ExecuteAll() {
-			foreach (var command in _bus.Values.Where(c => c.IsExecuted == false)) {
+			foreach(var command in _bus.Values.Where(c => c.IsExecuted == false)) {
 				command.Execute();
 				command.IsExecuted = true;
 			}
 		}
 		private class Handler {
-			public Delegate Action { get; set; }
-			public Type Type { get; set; }
-			public object Sender { get; set; }
+			public Delegate Action { get;set; }
+			public Type Type { get;set; }
+			public object Sender { get;set; }
 		}
 	}
 }

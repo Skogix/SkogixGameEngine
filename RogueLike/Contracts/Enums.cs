@@ -7,8 +7,6 @@ namespace RogueLike.Contracts {
 		Right,
 	}
 	public enum Actions {
-		None,
-		Move,
-		Attack,
+		None, Move, Attack,
 	}
 }

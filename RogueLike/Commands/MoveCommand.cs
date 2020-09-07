@@ -5,26 +5,26 @@ using RogueLike.Components;
 #endregion
 
 namespace RogueLike.Commands {
-	public class MoveCommand : ICommand {
+	public class MoveCommand: ICommand {
 		public MoveCommand(Transform transform, Destination destination) {
 			Transform = transform;
 			Destination = destination;
 		}
-		public Transform Transform { get; set; }
-		public Destination Destination { get; set; }
+		public Transform Transform { get;set; }
+		public Destination Destination { get;set; }
 		public void Execute() {
 			Transform.X += Destination.X;
 			Transform.X += Destination.Y;
 			IsExecuted = true;
 		}
 		public void UndoAction() {
-			if (IsExecuted == false) return;
+			if(IsExecuted == false) return;
 			Transform.X -= Destination.X;
 			Transform.X -= Destination.Y;
 		}
-		public bool IsExecuted { get; set; }
+		public bool IsExecuted { get;set; }
 	}
-	public class MovementHandler : CommandHandler {
+	public class MovementHandler: CommandHandler {
 		/*
 		private readonly List<ICommand> _commands;
 		private ICommand _command;

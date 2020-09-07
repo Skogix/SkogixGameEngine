@@ -5,7 +5,7 @@ using RogueLike.Components;
 #endregion
 
 namespace RogueLike.Events {
-	public class MoveEvent : IEvent {
+	public class MoveEvent: IEvent {
 		public Destination Destination;
 		public Entity Entity;
 		public Transform Transform;
@@ -14,6 +14,6 @@ namespace RogueLike.Events {
 			Transform = transform;
 			Destination = destination;
 		}
-		public string Message { get; set; }
+		public string Message { get;set; }
 	}
 }

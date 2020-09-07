@@ -4,6 +4,6 @@ using System.Collections.Generic;
 
 namespace ECS.Interfaces {
 	public interface ITemplate {
-		List<Component> Components { get; set; }
+		List<Component> Components { get;set; }
 	}
 }

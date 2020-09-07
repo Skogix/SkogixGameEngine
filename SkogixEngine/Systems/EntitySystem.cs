@@ -5,7 +5,7 @@ using ECS.Interfaces;
 #endregion
 
 namespace ECS.Systems {
-	public abstract class EntitySystem : ISystem {
+	public abstract class EntitySystem: ISystem {
 		private readonly List<Type> _filters;
 		protected readonly List<Entity> Entities;
 		protected EntitySystem(World world) {
@@ -17,20 +17,19 @@ namespace ECS.Systems {
 		}
 		internal World World { get; }
 		protected internal void AddFilter(Type componentType) {
-			if (_filters.Contains(componentType) == false) _filters.Add(componentType);
+			if(_filters.Contains(componentType) == false) _filters.Add(componentType);
 			var huhu = new List<Entity>();
-			foreach (var filter in _filters)
-			foreach (var entity in Entities)
-				if (entity.tmpComponents.Exists(c => c.GetType() == filter) == false)
-					huhu.Add(entity);
-			foreach (var entity in huhu) Entities.Remove(entity);
+			foreach(var filter in _filters)
+				foreach(var entity in Entities)
+					if(entity.tmpComponents.Exists(c => c.GetType() == filter) == false)
+						huhu.Add(entity);
+			foreach(var entity in huhu) Entities.Remove(entity);
 		}
 		private void OnComponentRemoved(ComponentRemovedEvent e) {
-			if (World.EntityManager.Has(e.Entity, _filters) == false) Entities.Remove(e.Entity);
+			if(World.EntityManager.Has(e.Entity, _filters) == false) Entities.Remove(e.Entity);
 		}
 		private void OnComponentAdded(ComponentAddedEvent e) {
-			if (World.EntityManager.Has(e.Entity, _filters) && Entities.Contains(e.Entity) == false)
-				Entities.Add(e.Entity);
+			if(World.EntityManager.Has(e.Entity, _filters) && Entities.Contains(e.Entity) == false) Entities.Add(e.Entity);
 		}
 	}
 }

@@ -3,7 +3,7 @@ using ECS.Interfaces;
 #endregion
 
 namespace RogueLike.Events {
-	public class PrintEvent : IEvent {
+	public class PrintEvent: IEvent {
 		public readonly char Glyph;
 		public readonly int X;
 		public readonly int Y;
@@ -13,6 +13,6 @@ namespace RogueLike.Events {
 			Glyph = glyph;
 			Message = $"Print: {X},{Y}:{Glyph}";
 		}
-		public string Message { get; set; }
+		public string Message { get;set; }
 	}
 }

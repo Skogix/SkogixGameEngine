@@ -8,8 +8,8 @@ using RogueLike.Events;
 #endregion
 
 namespace RogueLike.Systems {
-	public class DrawSystem : EntitySystem, IRunSystem, InitSystem {
-		public DrawSystem(World world) : base(world) { World = world; }
+	public class DrawSystem: EntitySystem, IRunSystem, InitSystem {
+		public DrawSystem(World world): base(world) => World = world;
 		public World World { get; }
 		public void Init() {
 			AddFilter(typeof(Drawable));
@@ -17,7 +17,7 @@ namespace RogueLike.Systems {
 			this.Sub<MoveEvent>(this, OnMoveEvent);
 		}
 		public void Run() {
-			foreach (var entity in Entities) {
+			foreach(var entity in Entities) {
 				/*
 				var drawable = entity.Get<Drawable>();
 				var transform = entity.Get<Transform>();
@@ -26,13 +26,16 @@ namespace RogueLike.Systems {
 			*/
 			}
 
-			var skogix = World.EntityManager.GetAllEntitiesWithComponent<Actor>().First();
+			var skogix = World.EntityManager.GetAllEntitiesWithComponent<Actor>()
+			                  .First();
 			var t = skogix.Get<Transform>();
-			Print(t.X, t.Y, skogix.Get<Drawable>().Glyph);
+			Print(t.X, t.Y, skogix.Get<Drawable>()
+			                      .Glyph);
 		}
 		private void OnMoveEvent(MoveEvent e) {
-			if (e.Destination.X != 0 && e.Destination.Y != 0)
-				Print(e.Transform.X, e.Transform.Y, e.Entity.Get<Drawable>().Glyph);
+			if(e.Destination.X != 0 && e.Destination.Y != 0)
+				Print(e.Transform.X, e.Transform.Y, e.Entity.Get<Drawable>()
+				                                     .Glyph);
 		}
 		private void Print(in int x, in int y, in char glyph) {
 #if RELEASE

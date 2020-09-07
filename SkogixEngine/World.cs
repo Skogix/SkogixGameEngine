@@ -9,6 +9,8 @@ using ECS.Systems;
 
 namespace ECS {
 	public class World {
+		public const int MapHeight = 20;
+		public const int MapWidth = 60;
 		private readonly List<ISystem> _allSystems = new List<ISystem>();
 		private readonly List<InitSystem> _initSystems = new List<InitSystem>();
 		private readonly List<IRunSystem> _runSystems = new List<IRunSystem>();
@@ -25,13 +27,13 @@ namespace ECS {
 		}
 		private void _init() {
 			var domain = AppDomain.CurrentDomain; // nuvarande domain, dvs inte SkogixEngine utan där den callas
-			foreach (var componentType in from assembly in
-				                              domain.GetAssemblies() // hämtar loadade assemblies från domainen
-			                              from type in assembly.GetTypes() // hämtar typer från assembly
-			                              where
-				                              type.IsSubclassOf(typeof(Component
-				                                                )) // där typen är sealed och ärver av component
-			                              select type) {
+			foreach(var componentType in from assembly in
+				                             domain.GetAssemblies()         // hämtar loadade assemblies från domainen
+			                             from type in assembly.GetTypes() // hämtar typer från assembly
+			                             where
+				                             type.IsSubclassOf(typeof(Component
+				                                               )) // där typen är sealed och ärver av component
+			                             select type) {
 				var id = EntityFactory.BackupData.ComponentTypes.Count;
 				EntityFactory.BackupData.ComponentTypes.Add(componentType);
 				EntityFactory.BackupData.ComponentIdByType[componentType] = id;
@@ -41,14 +43,14 @@ namespace ECS {
 		public EntitySystem AddSystem(EntitySystem system) {
 			_allSystems.Add(system);
 			//if(system is EntitySystem entitySystem) _entitySystems.Add(entitySystem);
-			if (system is IRunSystem runSystem) _runSystems.Add(runSystem);
-			if (system is InitSystem initSystem) _initSystems.Add(initSystem);
+			if(system is IRunSystem runSystem) _runSystems.Add(runSystem);
+			if(system is InitSystem initSystem) _initSystems.Add(initSystem);
 			return system;
 		}
 		public void Run() {
 			_runSystems.ForEach(s => s.Run());
 			EventManager.ExecuteAll();
 		}
-		public void InitSystems() { _initSystems.ForEach(s => s.Init()); }
+		public void InitSystems() => _initSystems.ForEach(s => s.Init());
 	}
 }

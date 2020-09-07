@@ -3,7 +3,7 @@ using ECS.Interfaces;
 #endregion
 
 namespace ECS {
-	public class ComponentRemovedEvent : IEvent {
+	public class ComponentRemovedEvent: IEvent {
 		public Component Component;
 		public Entity Entity;
 		public ComponentRemovedEvent(Entity entity, Component component) {
@@ -11,6 +11,6 @@ namespace ECS {
 			Component = component;
 			Message = $"Removed {component} from {entity.GetHash}";
 		}
-		public string Message { get; set; }
+		public string Message { get;set; }
 	}
 }

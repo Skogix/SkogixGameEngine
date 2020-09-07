@@ -1,3 +1,3 @@
 namespace ECS.Factories {
-	public class EventFactory<T> { }
+	public class EventFactory<T> {}
 }

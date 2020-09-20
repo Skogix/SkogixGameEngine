@@ -14,7 +14,7 @@ namespace RogueLike.Commands {
 		public Destination Destination { get;set; }
 		public void Execute() {
 			Transform.X += Destination.X;
-			Transform.X += Destination.Y;
+			Transform.Y += Destination.Y;
 			IsExecuted = true;
 		}
 		public void UndoAction() {

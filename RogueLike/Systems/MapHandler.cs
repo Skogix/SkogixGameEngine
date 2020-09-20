@@ -1,4 +1,4 @@
-#region
+/*#region
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -34,7 +34,7 @@ namespace RogueLike.Systems {
 
 public static class Skogix {
 	public static int MapHeight = 20;
-	public static int MapWidth = 80;
+	public static int MapWidth = 20;
 }
 public class MapHandler {
 	public MapHandler(int starvingDeath, int overPopDeath, int chanceToStartAlive = 50) {
@@ -156,7 +156,7 @@ public class MapHandler {
 	 *						state = cells[höjd, bredd]
 	 *						alive = (state = 0 && (överlevandeGrannar(i) || state = 1)
 	 *					cells[bredd, höjd] = alive ? 1 : 0
-	 */
+	 #1#
 	public TileMap Simulate(TileMap oldMap) {
 		var newMap = new TileMap();
 		for(var x = 0; x < Skogix.MapWidth; x++) {
@@ -164,7 +164,6 @@ public class MapHandler {
 				var counter = countAliveNeighbours(oldMap, x, y);
 				var newMapTile = newMap.Tiles[x, y];
 				var isAlive = newMapTile.TileType == TileType.Wall;
-				
 				/*
 				if(x == 0 || y == 0 || x == Skogix.MapWidth - 2 || y == Skogix.MapHeight - 2) {
 					newMapTile.TileType = TileType.Wall;
@@ -173,13 +172,12 @@ public class MapHandler {
 				else if(counter < 1) newMapTile.TileType = TileType.Wall;
 				else newMapTile.TileType = TileType.Floor;
 
-				*/
-				
+				#1#
 				if(x == 0 || y == 0 || x == Skogix.MapWidth - 2 || y == Skogix.MapHeight - 2) {
 					newMapTile.TileType = TileType.Wall;
 					newMapTile.Color = ConsoleColor.Black;
-				} else if(isAlive && counter < 3) {               
-					newMapTile.TileType = TileType.Floor; 
+				} else if(isAlive && counter < 3) {
+					newMapTile.TileType = TileType.Floor;
 					newMapTile.Color = ConsoleColor.White;
 				} else if(!isAlive && counter > 5) {
 					newMapTile.TileType = TileType.Wall;
@@ -187,7 +185,7 @@ public class MapHandler {
 				} else if(isAlive == false && counter == 3) {
 					newMapTile.TileType = TileType.Wall;
 					newMapTile.Color = ConsoleColor.Red;
-				} else if(Random.Next(1, 101) > 50){
+				} else if(Random.Next(1, 101) > 50) {
 					newMapTile.TileType = TileType.Floor;
 					newMapTile.Color = ConsoleColor.Black;
 				} else {
@@ -248,4 +246,5 @@ public class MapHandler {
 		return tileMap;
 	}
 	private int RandomPercent(int percent) => percent >= Random.Next(1, 101)? 1: 0;
-}
+}*/
+

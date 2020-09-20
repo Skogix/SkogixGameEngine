@@ -13,6 +13,22 @@ namespace RogueLike {
 		};
 		public List<Component> Components { get;set; }
 	}
+	public class WallTile: ITemplate {
+		public WallTile(int x, int y) => Components = new List<Component> {
+			new Drawable('#'),
+			new Transform(x,y),
+		};
+		public List<Component> Components { get;set; }
+	}
+	public class FloorTile: ITemplate {
+		public FloorTile(int x, int y) => Components = new List<Component> {
+			new Drawable('.'),
+			new Transform(x,y),
+		};
+		public List<Component> Components { get;set; }
+	}
+
+	
 	public class NameComponent: Component {
 		public NameComponent(string name) => Name = name;
 		public string Name { get;set; }

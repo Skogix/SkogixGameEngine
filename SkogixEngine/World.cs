@@ -44,7 +44,7 @@ namespace ECS {
 		}
 		public void Run() {
 			_runSystems.ForEach(s => s.Run());
-			EventManager.ExecuteAll();
+			//EventManager.ExecuteAll();
 		}
 		public void InitSystems() => _initSystems.ForEach(s => s.Init());
 	}

@@ -1,4 +1,5 @@
 #region
+using System;
 using System.Linq;
 using ECS;
 using ECS.Interfaces;
@@ -17,18 +18,19 @@ namespace RogueLike.Systems {
 			this.Sub<MoveEvent>(this, OnMoveEvent);
 		}
 		public void Run() {
+			Console.Clear();
 			foreach(var entity in Entities) {
-				/*
 				var drawable = entity.Get<Drawable>();
 				var transform = entity.Get<Transform>();
 				Console.SetCursorPosition(transform.X, transform.Y);
 				Console.Write(drawable.Glyph);
-			*/
 			}
 
+			/*
 			var skogix = World.EntityManager.GetAllEntitiesWithComponent<Actor>().First();
 			var t = skogix.Get<Transform>();
 			Print(t.X, t.Y, skogix.Get<Drawable>().Glyph);
+		*/
 		}
 		private void OnMoveEvent(MoveEvent e) {
 			if(e.Destination.X != 0 && e.Destination.Y != 0) Print(e.Transform.X, e.Transform.Y, e.Entity.Get<Drawable>().Glyph);

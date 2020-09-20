@@ -43,6 +43,7 @@ namespace ECS {
 		*/
 		public static void Push<T>(this EntitySystem es, T data) where T: ICommand => es.World.EventManager.Push(data);
 		public static void Pull<T>(this EntitySystem es, Type type) where T: class, ICommand => es.World.EventManager.Pull<T>(type);
+		public static void PullAll(this EntitySystem es) => es.World.EventManager.ExecuteAll();
 		public static void Pub<T>(this EntitySystem es, T data) => es.World.EventManager.Publish(data);
 		public static void Sub<T>(this EntitySystem es, object sub, Action<T> data) => es.World.EventManager.Subscribe(sub, data);
 	}

@@ -1,12 +1,4 @@
-#region
-using System;
-using ECS;
-using ECS.Interfaces;
-using ECS.Systems;
-using RogueLike.Components;
-using RogueLike.Events;
-#endregion
-
+/*
 namespace RogueLike.Systems {
 	public class MapOLD: EntitySystem, InitSystem {
 		public const int Height = 10;
@@ -27,4 +19,5 @@ namespace RogueLike.Systems {
 				}
 		}
 	}
-}
+}*/
+

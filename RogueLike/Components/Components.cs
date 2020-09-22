@@ -34,4 +34,5 @@ namespace RogueLike.Components {
 		public int X { get;set; }
 		public int Y { get;set; }
 	}
+
 }

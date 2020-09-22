@@ -31,20 +31,14 @@ namespace RogueLikeUI {
 
 			
 			var w = new World();
+			w.AddSystem(new TileSystem(w, width, height, map));
 			w.AddSystem(new InputSystem(w));
 			w.AddSystem(new MoveSystem(w));
 			w.AddSystem(new ResolveSystem(w));
 			w.AddSystem(new DrawSystem(w));
 			w.InitSystems();
 			
-			for(int x = 0; x < width; x++) {
-				for(int y = 0; y < height; y++) {
-					if(map[x, y])
-						w.CreateEntity(new WallTile(y, x));
-					else
-						w.CreateEntity(new FloorTile(y, x));
-				}
-			}
+
 
 			var skogix = w.CreateEntity(new PlayerTemplate("Skogix"));
 			Console.Clear();

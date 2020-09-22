@@ -13,20 +13,6 @@ namespace RogueLike {
 		};
 		public List<Component> Components { get;set; }
 	}
-	public class WallTile: ITemplate {
-		public WallTile(int x, int y) => Components = new List<Component> {
-			new Drawable('#'),
-			new Transform(x,y),
-		};
-		public List<Component> Components { get;set; }
-	}
-	public class FloorTile: ITemplate {
-		public FloorTile(int x, int y) => Components = new List<Component> {
-			new Drawable('.'),
-			new Transform(x,y),
-		};
-		public List<Component> Components { get;set; }
-	}
 
 	
 	public class NameComponent: Component {
@@ -35,6 +21,27 @@ namespace RogueLike {
 	}
 	public class MonsterTemplate: ITemplate {
 		public MonsterTemplate(string name) => Components = new List<Component> {new Health(25, 25), new NameComponent(name)};
+		public List<Component> Components { get;set; }
+	}
+	
+	
+	
+	public class WallTile: ITemplate {
+		public WallTile(int x, int y) {
+			Components = new List<Component> {
+				new Drawable('#'),
+				new Transform(x,y),
+			};
+		}
+		public List<Component> Components { get;set; }
+	}
+	public class FloorTile: ITemplate {
+		public FloorTile(int x, int y) {
+			Components = new List<Component> {
+				new Drawable('.'),
+				new Transform(x,y),
+			};
+		}
 		public List<Component> Components { get;set; }
 	}
 }
